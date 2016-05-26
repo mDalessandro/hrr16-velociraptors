@@ -40,7 +40,7 @@ Once the project moves into development, the press release can be used as a touc
 ## Our Team ##
   > Product Owner: Steven Marks  
     Scrum Master: Eduard Bardají Puig  
-    Software Engineer: Tyrus Brenc
+    Software Engineer: Tyrus Brenc  
     Software Engineer: Matthew D'Alessandro
 
 ## Quote From Us ##
@@ -52,12 +52,10 @@ Once the project moves into development, the press release can be used as a touc
     will automatically check the availability of the inputted identifier name.
 
 ## Customer Quote ##
-  > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
   > User Cody Daig provides us with some very valuable insight from a user perspective. He says,  
     "I was in the process of tracking a tornado with my bros, and got lost in the storm! Luckily,  
     I was already signed up with [NAME], so my bros were able to guide me out of the darkness."
 
 ## Closing and Call to Action ##
-  > Wrap it up and give pointers where the reader should go next.
   > Check out our app at: [DEPLOYMENT_URL]
   
