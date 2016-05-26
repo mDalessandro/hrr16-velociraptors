@@ -1,0 +1,20 @@
+{
+  "name": "greenfield",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hrr16-velociraptors/hrr16-velociraptors.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hrr16-velociraptors/hrr16-velociraptors.git"
+  },
+  "homepage": "https://github.com/hrr16-velociraptors/hrr16-velociraptors.git#readme"
+}
