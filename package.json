@@ -16,5 +16,12 @@
   "bugs": {
     "url": "https://github.com/hrr16-velociraptors/hrr16-velociraptors.git"
   },
-  "homepage": "https://github.com/hrr16-velociraptors/hrr16-velociraptors.git#readme"
+  "homepage": "https://github.com/hrr16-velociraptors/hrr16-velociraptors.git#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "",
+    "body-parser": "",
+    "express": "",
+    "express-session": "",
+    "mongodb": ""
+  }
 }
