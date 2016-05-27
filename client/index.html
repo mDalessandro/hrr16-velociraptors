@@ -1,12 +1,26 @@
 <!DOCTYPE html>
+<html ng-app="greenfield">
+  <head>
+    <meta charset="utf-8" />
+    <title>Greenfield</title>
+    <link rel="stylesheet" type="text/css" href="styles/styles.css" />
+  </head>
+  <body>
+    <h1 class="title">Greenfield</h1>
 
-<html>
+    <!-- Templates injected here -->
+    <div ng-view></div>
 
-<head>
-</head>
-
-<body>
-  <h1>Greenfield!</h1>
-</body>
-
+    <!-- Angular Dependencies -->
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular-mocks/angular-mocks.js"></script>
+    <script src="lib/angular-route/angular-route.js"></script>
+    
+    <!-- Angular Modules -->
+    <script src="app/auth/auth.js"></script>
+    <script src="app/home/home.js"></script>
+    <script src="app/profile/profile.js"></script>
+    <script src="app/app.js"></script>
+    <script src="app/services/services.js"></script>
+  </body>
 </html>
