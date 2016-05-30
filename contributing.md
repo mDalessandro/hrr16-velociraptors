@@ -36,16 +36,21 @@ Inside editor, change all `pick`s to `fixup` except first. Change name of that o
 git commit --amend
 ```
 
-4. Push branch to your fork
+4. Rebase your branch
+```sh
+git pull --rebase upstream master #make sure you are on your local branch, not local master
+```
+
+5. Push branch to your fork
 ```sh
 git push origin <branch_name>
 ```
 
-5. Submit pull request.
+6. Submit pull request.
 Organization name / master (BASE)
 Your name / branch (TARGET)
 
-6. Sync with organization master branch before working on new issue
+7. Sync with organization master branch before working on new issue
 
 ```sh
 git pull --rebase upstream master
