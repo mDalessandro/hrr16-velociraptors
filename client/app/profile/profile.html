@@ -1,0 +1,25 @@
+<div id='container' ng-model='greenfield.services'>
+
+  <h1>Profile - My Tags</h1>
+
+ <div class='navigation'>
+  <ul>
+    <li><a href='#/profile' class='index'>My Profile</a></li>
+    <li><a href='#/home' class='create'>Home</a></li>
+    <li><a href='#/signin' ng-click='signout();' class='logout'>Logout</a></li>
+      </ul>
+  </div>
+  <!--box for users to register new tags-->
+  <!--will need to validate/check if tag already exists here or somewhere else in program-->
+  <form name="registerForm" ng-submit='addTag()' novalidate>
+    <input name='tagname' type='text' ng-model='tag.tagname' placeholder = "Enter tag name" required>
+    <input name='coordinates' type='text' ng-model='tag.coordinates' placeholder = "Enter tag name" required>
+    <button type="submit" ng-disabled=shortenForm.$invalid>Register Tag</button>
+  </form>
+  <!--display for all user tags-->
+    <input name='search' type='text' ng-model='searcher' placeholder = "Search" >
+      <div class='tags' ng-repeat="tag in data.tags | filter:searcher " ng-click="">
+      <div class="tagName">{{tag.tagname}}</div>
+      <div class="tagLocation">{{tag.coordinates}}</div>
+  </div>
+</div>
