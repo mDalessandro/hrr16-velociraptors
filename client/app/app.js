@@ -1,4 +1,26 @@
 //main angular module
-  //other angular modules
-
-//.config/routes
+angular.module('greenfield', [
+  'greenfield.home',
+  'greenfield.auth',
+  'greenfield.profile',
+  'ngRoute'
+])
+.config(function($routeProvider) {
+  $routeProvider
+    .when('/', {
+      templateUrl: 'app/home/home.html',
+      controller: 'HomeController'
+    })
+    .when('/signin', {
+      templateUrl: 'app/auth/signin.html',
+      controller: 'AuthController'
+    })
+    .when('/signup', {
+      templateUrl: 'app/auth/signup.html',
+      controller: 'AuthController'
+    })
+    .when('/profile', {
+      templateUrl: 'app/profile/profile.html',
+      controller: 'ProfileController'
+    })
+});
