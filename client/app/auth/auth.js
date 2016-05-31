@@ -1,4 +1,4 @@
-angular.module('greendfield.auth', [])
+angular.module('greenfield.auth', [])
 
 .controller('AuthController', function($scope, Auth, $location) {
   angular.extend($scope, Auth)
