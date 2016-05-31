@@ -20,9 +20,7 @@ var UserSchema = new mongoose.Schema({
     type: String,
         trim: true,
         unique: true,
-        required: true,
-        validate: [validateEmail, 'Please fill in a valid email address'],
-        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill in a valid email address']
+        required: true
   },
   name: {
     type: String,
