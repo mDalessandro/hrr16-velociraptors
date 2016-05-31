@@ -1,0 +1,28 @@
+<div id="container" ng-controller="AuthController">
+  
+  <h1>Sign Up</h1>
+  
+  <div class='navigation'>
+    <ul>
+      <li><a href='#/home' class='create'>Home</a></li>
+    </ul>
+  </div>
+  
+  <!-- box for users to sign up -->
+  <form name="signupForm" ng-submit="addUser(newEmail, newUser, newPass); newEmail=''; newUser=''; newPass=''">
+    <input name="email" ng-model="newEmail" type="text" placeholder="Enter email address" required>
+    <input name="user" ng-model="newUser" type="text" placeholder="Enter username" required>
+    <input name="pass" ng-model="newPass" type="text" placeholder="Enter password" required>
+    <button type="submit" ng-disabled=shortenForm.$invalid>Sign Up</button>
+  </form>
+  
+  <!-- results of sign up attempt display here -->
+  <div class="result"><!-- {{ results of submit }} --></div>
+  
+  <!-- link to login -->
+  <div>
+    Already a user? <br>
+    <a href='#/signin'>Log In</a>
+  </div>
+  
+</div>
