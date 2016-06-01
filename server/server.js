@@ -69,7 +69,7 @@ app.route('/api/tags')
           console.log(err);
           next(err);
         } else {
-          tag ? res.json(tag) || res.json([]);
+          tag ? res.json(tag) : res.json([]);
         }
       });
   } else {
@@ -149,15 +149,11 @@ app.route('/signin')
     // extract username and password from body
     var username = req.body.username;
     var password = req.body.password;
-    // check db whether the user already exists
-    // if user does not exist
-    // insert his info in database
-    // if user already exists
-    // send back 403 error
-
-    // temporary code
+    // check db for user credentials
+    // if credentials pass assign session username, redirect to /profile
     req.session.username = req.body.username;
     res.redirect('/profile');
+    // if credentials dont match send back 403 error
   }
 });
 
@@ -180,6 +176,14 @@ app.route('/signup')
     // check db whether the user already exists
     // if user does not exist
     // insert user info in database
+    var salt = bcrypt.genSaltSync(5);
+    var hash = bcrypt.hashSync(req.body.password, salt);
+    var user = {
+      email: req.body.email,
+      name: req.body.name,
+      password: hash,
+      username: req.body.username
+    };
     // if user already exists
     // send back 409 error
     var username = req.body.username;
