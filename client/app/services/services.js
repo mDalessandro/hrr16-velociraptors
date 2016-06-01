@@ -6,6 +6,7 @@ angular.module('greenfield.services', [])
       method: 'GET',
       url: '/api/tags'
     }).then(function (resp){
+
       return resp.data;
     })
   };
@@ -15,11 +16,13 @@ angular.module('greenfield.services', [])
       method: 'GET',
       url: '/api/tags/?user='+user
     }).then(function (resp){
+            console.log("getting from server: ",resp.data)
       return resp.data;
     })
   };
 
   var addOne = function(tag){
+    console.log("sending server: ",tag)
     return $http({
       method: 'POST',
       url: '/api/tags',

@@ -92,10 +92,10 @@ app.route('/api/tags')
     // if new tag: insert in DB and send back 201 returns inserted data
     // if tag taken: send back 409 Conflict
     var username = req.body.username;
-    var tag  = req.body.tagname;
+    var tagname  = req.body.tagname;
     var lat  = req.body.lat;
     var long = req.body.long;
-    Tag.findOne({'tagname': tag}, function(err, tag){
+    Tag.findOne({'tagname': tagname}, function(err, tag){
       if (err){
         console.log(err);
         next(err);
@@ -106,7 +106,8 @@ app.route('/api/tags')
         } else {
           // Uncomment if ES6 not working
           // var newTag = new Tag({'username': username, 'tagname': tag, 'lat': lat, 'long': long});
-          var newTag = new Tag({username, tag, lat, long});
+          var newTag = new Tag({username, tagname, lat, long});
+          console.log(newTag)
           newTag.save(function (err, tag) {
             res.status(201).json(tag);
           });
