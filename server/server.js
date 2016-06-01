@@ -19,7 +19,7 @@ app.use(session({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static(path.resolve(__dirname + '/../client/public')));
+app.use(express.static(path.resolve(__dirname + '/../client/')));
 
 app.route('/')
 .get(function(req, res){
@@ -219,10 +219,10 @@ app.route('/signup')
   }
 });
 
-app.route('/*')
-.get(function (req, res) {
-  res.redirect('/');
-});
+// app.route('/*')
+// .get(function (req, res) {
+//   res.redirect('/');
+// });
 
 
 module.exports = app;
