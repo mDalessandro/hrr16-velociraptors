@@ -12,14 +12,13 @@ var Tag = require('./tags/tagModel');
 var app = express();
 app.use(session({
   secret: 'Greenfield STEM',
-  cookie: { maxAge: 60 * 1000 }, // 1 minute I believe
+  cookie: { maxAge: 60 * 1000 }, // 1 minute
   resave: true,
   saveUninitialized: true
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// ask mat and steven static file location
 app.use(express.static(path.resolve(__dirname + '/../client/public')));
 
 app.route('/')
@@ -28,78 +27,90 @@ app.route('/')
 });
 
 app.route('/api/tags')
-.get(function(req, res){
-  // check to see whether there is a user query
+.get(function(req, res, next){
+  // check whether there is a user query
   if (req.query.username) {
     // check to see if username exists
     // if exists, send back list of tag:coord pairs
     // the list is an array of objects, each object is {name: 'myHouse', coord: {lat: 3.3425, long: 1.50588}}
     // else send back empty array
     var username = req.query.username;
-    User.findOne({'username': username}, function(err, result){
+    User.findOne({'username': username}, function(err, user){
+      // findOne will return null if no matches
+      // http://mongoosejs.com/docs/api.html#query_Query-findOne
       if (err){
-        res.statusCode = 200;
-        res.send('[]');
+        console.log(err);
+        next(err);
       } else {
-        Tag.find({'username': username}, function(err, result){
-          if (err){
-            res.statusCode = 200;
-            res.send('User has not created any tags yet');
-          } else {
-            res.statusCode = 200;
-            res.send(result);
-          }
-        })
+        if (user) {
+          // user `username` found
+          Tag.find({'username': username}, function(err, tags){
+            // `find` will return empty array [] if no matches
+            // http://stackoverflow.com/questions/18214635/what-is-returned-from-mongoose-query-that-finds-no-matches
+            if (err){
+              console.log(err);
+              next(err);
+            } else {
+              res.json(tags);
+            }
+          });
+        } else {
+          // user `username` not found
+          res.json([]);
+        }
       }
-    })
+    });
   } else if (req.query.tag) {
     // if tag exists send back array with the single result
     // else send back empty array
       var tag = req.query.tag;
-      Tag.findOne({'tagname': tag}, function(err, result){
+      Tag.findOne({'tagname': tag}, function(err, tag){
         if (err){
-          res.statusCode = 200;
-          res.send('[]');
+          console.log(err);
+          next(err);
         } else {
-          res.statusCode = 200;
-          res.send(result);
+          tag ? res.json(tag) || res.json([]);
         }
       });
   } else {
     // send back a list of entire database
-      Tag.find({}, function(err, result){
+      Tag.find({}, function(err, tags){
       if (err){
-        res.statusCode = 400;
-        res.end();
+        console.log(err);
+        next(err);
       } else {
-        res.statusCode = 200;
-        res.send(result);
+        res.json(tags);
       }
-    })
+    });
   }
 })
-.post(function(req, res) {
+.post(function(req, res, next) {
   // check to see whether user is authenticated
   if (req.session.username) {
     // user is authenticated
     // check to see whether that tag already exists
     // if new tag: insert in DB and send back 201 returns inserted data
     // if tag taken: send back 409 Conflict
-    Tag.findOne({'tagname': tag}, function(err, result){
-      var user = req.body.username;
-      var tag  = req.body.tagname;
-      var lat  = req.body.lat;
-      var long = req.body.long;
+    var username = req.body.username;
+    var tag  = req.body.tagname;
+    var lat  = req.body.lat;
+    var long = req.body.long;
+    Tag.findOne({'tagname': tag}, function(err, tag){
       if (err){
-        res.statusCode = 201;
-        var newTag = new Tag({'username': user, 'tagname': tag, 'lat': lat, 'long': long});
-        console.log(newTag);
-        res.send(newTag);
-
+        console.log(err);
+        next(err);
       } else {
-        res.statusCode = 409;
-        console.log("Tag already exists")
-        res.end();
+        if (tag) {
+          res.sendStatus(409);
+          console.log("Tag already exists")
+        } else {
+          // Uncomment if ES6 not working
+          // var newTag = new Tag({'username': username, 'tagname': tag, 'lat': lat, 'long': long});
+          var newTag = new Tag({username, tag, lat, long});
+          newTag.save(function (err, tag) {
+            res.status(201).json(tag);
+          });
+        }
       }
     });
   } else {
@@ -158,7 +169,7 @@ app.route('/signup')
     res.sendFile(path.resolve(__dirname + '/../client/app/auth/signup.html'));
   }
 })
-.post(function(req, res) {
+.post(function(req, res, next) {
   // check to see whether already authenticated
   if (req.session.username) {
     // is authenticated
@@ -168,24 +179,33 @@ app.route('/signup')
     // extract username and password from body
     // check db whether the user already exists
     // if user does not exist
-    // insert his info in database
+    // insert user info in database
     // if user already exists
-    // send back 403 error
+    // send back 409 error
     var username = req.body.username;
     var password = req.body.password;
     var name     = req.body.name;
     var email    = req.body.email;
-    User.findOne({'username': username}, function(err, result){
+    User.findOne({'username': username}, function(err, user){
       if (err){
-        res.statusCode = 201;
-        var newUser = new User({'username': username, 'password': password, 'name': name, 'email': email});
-        console.log(newUser);
-        res.send(newUser);
-
+        console.log(err);
+        next(err);
       } else {
-        res.statusCode = 409;
-        console.log("User already exists")
-        res.end();
+        if (user) {
+          console.log("User already exists");
+          res.sendStatus(409);
+        } else {
+          var newUser = new User({'username': username, 'password': password, 'name': name, 'email': email});
+          newUser.save(function (err) {
+            if (err) {
+              console.log(err);
+              next(err);
+            } else {
+              console.log(newUser);
+              res.redirect('/profile');
+            }
+          });
+        }
       }
     });
 
