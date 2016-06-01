@@ -32,7 +32,7 @@ angular.module('greenfield.services', [])
     addOne: addOne,
     getUserAll: getUserAll
   };
-}
+})
 
 .factory('Auth', function ($http, $location, $window) {
 
