@@ -181,12 +181,12 @@ app.route('/signup')
     var name     = req.body.name;
     var email    = req.body.email;
 
-    var salt = bcrypt.genSaltSync(5);
-    var hash = bcrypt.hashSync(req.body.password, salt);
+    // var salt = bcrypt.genSaltSync(5);
+    // var hash = bcrypt.hashSync(req.body.password, salt);
     var user = {
       email,
       name,
-      password: hash,
+      password,
       username
     };
     // if user already exists
