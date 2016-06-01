@@ -34,7 +34,7 @@ angular.module('greenfield.services', [])
   };
 })
 
-.factory('Auth', function ($http, $location, $window) {
+.factory('Auth', function ($http, $window) {
 
   var signin = function (user) {
     return $http({
