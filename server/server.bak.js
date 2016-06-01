@@ -19,7 +19,7 @@ app.use(session({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static(path.resolve(__dirname + '/../client/')));
+app.use(express.static(path.resolve(__dirname + '/../client/public')));
 
 app.route('/')
 .get(function(req, res){
@@ -69,7 +69,7 @@ app.route('/api/tags')
           console.log(err);
           next(err);
         } else {
-          tag ? res.json(tag) : res.json([]);
+          tag ? res.json(tag) || res.json([]);
         }
       });
   } else {
@@ -86,7 +86,7 @@ app.route('/api/tags')
 })
 .post(function(req, res, next) {
   // check to see whether user is authenticated
-  // if (req.session.username) {
+  if (req.session.username) {
     // user is authenticated
     // check to see whether that tag already exists
     // if new tag: insert in DB and send back 201 returns inserted data
@@ -113,38 +113,38 @@ app.route('/api/tags')
         }
       }
     });
-  // } else {
-  //   // user is not authenticated
-  //   res.sendStatus(403);
-  // }
+  } else {
+    // user is not authenticated
+    res.sendStatus(403);
+  }
 });
 
 app.route('/profile')
 .get(function (req, res) {
   // check whether user is authenticated
-  // if (req.session.username) {
+  if (req.session.username) {
     // user is authenticated
     // serve corresponding files
     res.sendFile(path.resolve(__dirname + '/../client/app/profile/profile.html'))
-  // } else {
-  //   // user is not authenticated
-  //   res.redirect('/signin');
-  // }
+  } else {
+    // user is not authenticated
+    res.redirect('/signin');
+  }
 });
 
 app.route('/signin')
 .get(function(req, res) {
-  // if (req.session.username) {
-  //   res.redirect('/profile');
-  // } else {
+  if (req.session.username) {
+    res.redirect('/profile');
+  } else {
     res.sendFile(path.resolve(__dirname + '/../client/app/auth/signin.html'));
-  // }
+  }
 })
 .post(function(req, res) {
   // check to see whether already authenticated
-  // if (req.session.username) {
-  //   res.redirect('/profile');
-  // } else {
+  if (req.session.username) {
+    res.redirect('/profile');
+  } else {
     // user not authenticated
     // extract username and password from body
     var username = req.body.username;
@@ -154,43 +154,42 @@ app.route('/signin')
     req.session.username = req.body.username;
     res.redirect('/profile');
     // if credentials dont match send back 403 error
-  // }
+  }
 });
 
 app.route('/signup')
 .get(function(req, res) {
-  // if (req.session.username) {
-  //   res.redirect('/profile');
-  // } else {
+  if (req.session.username) {
+    res.redirect('/profile');
+  } else {
     res.sendFile(path.resolve(__dirname + '/../client/app/auth/signup.html'));
-  // }
+  }
 })
 .post(function(req, res, next) {
   // check to see whether already authenticated
-  // if (req.session.username) {
-  //   // is authenticated
-  //   res.redirect('/profile');
-  // } else {
+  if (req.session.username) {
+    // is authenticated
+    res.redirect('/profile');
+  } else {
     // not authenticated
     // extract username and password from body
     // check db whether the user already exists
     // if user does not exist
     // insert user info in database
+    var salt = bcrypt.genSaltSync(5);
+    var hash = bcrypt.hashSync(req.body.password, salt);
+    var user = {
+      email: req.body.email,
+      name: req.body.name,
+      password: hash,
+      username: req.body.username
+    };
+    // if user already exists
+    // send back 409 error
     var username = req.body.username;
     var password = req.body.password;
     var name     = req.body.name;
     var email    = req.body.email;
-
-    var salt = bcrypt.genSaltSync(5);
-    var hash = bcrypt.hashSync(req.body.password, salt);
-    var user = {
-      email,
-      name,
-      password: hash,
-      username
-    };
-    // if user already exists
-    // send back 409 error
     User.findOne({'username': username}, function(err, user){
       if (err){
         console.log(err);
@@ -214,16 +213,16 @@ app.route('/signup')
       }
     });
 
-    // // temporary code
-    // req.session.username = req.body.username;
-    // res.redirect('/profile');
-  // }
+    // temporary code
+    req.session.username = req.body.username;
+    res.redirect('/profile');
+  }
 });
 
-// app.route('/*')
-// .get(function (req, res) {
-//   res.redirect('/');
-// });
+app.route('/*')
+.get(function (req, res) {
+  res.redirect('/');
+});
 
 
 module.exports = app;
