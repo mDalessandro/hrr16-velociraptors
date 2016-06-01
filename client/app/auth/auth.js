@@ -1,6 +1,6 @@
 angular.module('greenfield.auth', [])
 
-.controller('AuthController', function($scope, Auth, $location) {
+.controller('AuthController', function($scope, Auth) {
   angular.extend($scope, Auth)
   
   $scope.login = function() {
