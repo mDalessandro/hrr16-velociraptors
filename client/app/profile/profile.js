@@ -9,7 +9,7 @@ angular.module('greenfield.profile', [])
   $scope.addTag = function(){
     Tags.addOne($scope.tag)
     .then(function(){
-      $scope.getUserTags()
+      $scope.getUserTags();
     });
   }
 

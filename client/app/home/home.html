@@ -1,0 +1,25 @@
+<div id='container'>
+
+  <h1>Home</h1>
+
+ <div class='navigation'>
+  <ul>
+    <li><a href='#/profile' class='index'>My Profile</a></li>
+    <li><a href='#/' class='create'>Home</a></li>
+    <li><a href='#/signin' ng-click='signout();' class='logout'>Logout</a></li>
+      </ul>
+  </div>
+  <!--box for users to register new tags-->
+  <!--will need to validate/check if tag already exists here or somewhere else in program-->
+  <form name="registerForm" ng-submit='searchTag()' novalidate>
+    <input name='tagname' type='text' ng-model='tag.tagname' placeholder = "Enter tag name" required>
+    <button type="submit" ng-disabled=shortenForm.$invalid>Check for Tag</button>
+
+  </form>
+  <!--display for all user tags-->
+    <div class="searchTag"><br>{{tag.result}}
+    <a href='#/profile' id='registerThisTag' class='logout' >Register this Tag</a>
+    </div>
+
+  </div>
+</div>
