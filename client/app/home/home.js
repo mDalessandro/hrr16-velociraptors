@@ -33,8 +33,8 @@ angular.module('greenfield.home', [])
     Auth.signout();
   }
 
-  if (!Auth.isAuth()){
-    //$location.path('/signin');
-  }
+  // if (!Auth.isAuth()){
+  //   //$location.path('/signin');
+  // }
 
 });

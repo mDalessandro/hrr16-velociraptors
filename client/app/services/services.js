@@ -85,14 +85,10 @@ angular.module('greenfield.services', [])
     return $http({
       method: 'GET',
       url: '/signin'
-    }).then(function (resp){
-      console.log(resp.status)
-      if (resp.status === 200){
-        return true;
-      } else {
-        return false
-      }
-    })
+    }).then(function(resp) {
+     return resp.status
+    });
+    return 403
    };
 
 
