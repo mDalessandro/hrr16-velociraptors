@@ -25,6 +25,6 @@ angular.module('greenfield', [
       controller: 'ProfileController'
     })
     .otherwise({
-      redirectTo: '/profile'
+      redirectTo: '/'
     })
 });
