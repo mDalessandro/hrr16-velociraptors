@@ -31,9 +31,6 @@ app.route('/api/tags')
   // check whether there is a user query
   if (req.query.username) {
     // check to see if username exists
-    // if exists, send back list of tag:coord pairs
-    // the list is an array of objects, each object is {name: 'myHouse', coord: {lat: 3.3425, long: 1.50588}}
-    // else send back empty array
     var username = req.query.username;
     User.findOne({'username': username}, function(err, user){
       // findOne will return null if no matches
@@ -43,9 +40,10 @@ app.route('/api/tags')
         next(err);
       } else {
         if (user) {
-          // user `username` found
+          // user exists, send back list of user's tags
           Tag.find({'username': username}, function(err, tags){
-            // `find` will return empty array [] if no matches
+            // `tags` is an array of objects, each object is {tagname: 'myHouse', username: lat: 3.3425, long: 1.50588}
+            // `find` will populate `tags` with empty array [] if no matches
             // http://stackoverflow.com/questions/18214635/what-is-returned-from-mongoose-query-that-finds-no-matches
             if (err){
               console.log(err);
@@ -55,25 +53,25 @@ app.route('/api/tags')
             }
           });
         } else {
-          // user `username` not found
+          // user `username` not found, send back empty array
           res.json([]);
         }
       }
     });
   } else if (req.query.tag) {
-    // if tag exists send back array with the single result
-    // else send back empty array
       var tag = req.query.tag;
       Tag.findOne({'tagname': tag}, function(err, tag){
         if (err){
           console.log(err);
           next(err);
         } else {
+          // send back array with the single result if tag found
+          // else send back empty array
           tag ? res.json(tag) : res.json([]);
         }
       });
   } else {
-    // send back a list of entire database
+    // send back a list of all tags in DB
       Tag.find({}, function(err, tags){
       if (err){
         console.log(err);
@@ -85,165 +83,141 @@ app.route('/api/tags')
   }
 })
 .post(function(req, res, next) {
-  // check to see whether user is authenticated
-  // if (req.session.username) {
-    // user is authenticated
-    // check to see whether that tag already exists
-    // if new tag: insert in DB and send back 201 returns inserted data
-    // if tag taken: send back 409 Conflict
-    var username = req.body.username;
+  // check whether user authenticated
+  if (req.session.username) {
+    // user authenticated
+    var username = req.body.username; // should actually be req.session.username
     var tagname  = req.body.tagname;
     var lat  = req.body.lat;
     var long = req.body.long;
+    // check to see whether that tag already exists
     Tag.findOne({'tagname': tagname}, function(err, tag){
       if (err){
         console.log(err);
         next(err);
       } else {
         if (tag) {
+          // tag taken, 409 Conflict
           res.sendStatus(409);
-          console.log("Tag already exists")
         } else {
+          // tag not taken: insert in DB, respond 201 + tag data
           // Uncomment if ES6 not working
           // var newTag = new Tag({'username': username, 'tagname': tag, 'lat': lat, 'long': long});
           var newTag = new Tag({username, tagname, lat, long});
-          console.log(newTag)
           newTag.save(function (err, tag) {
             res.status(201).json(tag);
           });
         }
       }
     });
-  // } else {
-  //   // user is not authenticated
-  //   res.sendStatus(403);
-  // }
+  } else {
+    // user not authenticated
+    res.sendStatus(403);
+  }
 });
 
 app.route('/profile')
 .get(function (req, res) {
-  // check whether user is authenticated
-  // if (req.session.username) {
+  // check whether user authenticated
+  if (req.session.username) {
     // user is authenticated
-    // serve corresponding files
+    // serve profile page
     res.sendFile(path.resolve(__dirname + '/../client/app/profile/profile.html'))
-  // } else {
-  //   // user is not authenticated
-  //   res.redirect('/signin');
-  // }
+  } else {
+    // user not authenticated
+    res.redirect('/signin');
+  }
 });
 
 app.route('/signin')
 .get(function(req, res) {
-  // if (req.session.username) {
-  //   res.redirect('/profile');
-  // } else {
+  if (req.session.username) {
+    // user authenticated, send to profile
+    res.redirect('/profile');
+  } else {
+    // user not authenticated, serve signin page
     res.sendFile(path.resolve(__dirname + '/../client/app/auth/signin.html'));
-  // }
+  }
 })
 .post(function(req, res) {
-  // check to see whether already authenticated
-  // if (req.session.username) {
-  //   res.redirect('/profile');
-  // } else {
+  if (req.session.username) {
+    // user authenticated
+    res.sendStatus(200);
+  } else {
     // user not authenticated
-    // extract username and password from body
-  var username = req.body.username;
-  var password = req.body.password;
-  // check db for user credentials
-  User.findOne({'username': username}).then(function(user){
-    if (!user){
-      // no user with that name found
-      res.sendStatus(404);
-    } else {
-      // there is a user by that name
-      return user.comparePasswords(password).then(function (match) {
-        if (match) {
-          req.session.username = username;
-          res.redirect('/profile');
-        } else {
-          res.sendStatus(403);
-        }
-      });
-    }
-  }).catch(function (error) {
-    console.log('In catch');
-    next(error);
-  });
-    // if credentials pass assign session username, redirect to /profile
-    // req.session.username = req.body.username;
-    // res.redirect('/profile');
-    // if credentials dont match send back 403 error
-  // }
+    var username = req.body.username;
+    var password = req.body.password;
+    // check db for user credentials
+    User.findOne({'username': username}).then(function(user){
+      if (!user){
+        // no user with that name found
+        res.sendStatus(404);
+      } else {
+        // there is a user by that name
+        return user.comparePasswords(password).then(function (match) {
+          if (match) {
+            req.session.username = username;
+            // res.redirect('/profile');
+            res.sendStatus(200);
+          } else {
+            res.sendStatus(403);
+          }
+        });
+      }
+    }).catch(function (error) {
+      console.log('Invalid username/password combination');
+      res.sendStatus(403);
+    });
+  }
 });
 
 app.route('/signup')
 .get(function(req, res) {
-  // if (req.session.username) {
-  //   res.redirect('/profile');
-  // } else {
+  if (req.session.username) {
+    res.redirect('/profile');
+  } else {
     res.sendFile(path.resolve(__dirname + '/../client/app/auth/signup.html'));
-  // }
+  }
 })
 .post(function(req, res, next) {
-  // check to see whether already authenticated
-  // if (req.session.username) {
-  //   // is authenticated
-  //   res.redirect('/profile');
-  // } else {
+  if (req.session.username) {
+    // is authenticated
+    // res.redirect('/profile');
+    res.sendStatus(200);
+  } else {
     // not authenticated
-    // extract username and password from body
-    // check db whether the user already exists
-    // if user does not exist
-    // insert user info in database
     var username = req.body.username;
     var password = req.body.password;
     var name     = req.body.name;
     var email    = req.body.email;
+    var userInfo = {email, name, password, username};
 
-    // var salt = bcrypt.genSaltSync(5);
-    // var hash = bcrypt.hashSync(req.body.password, salt);
-    var user = {
-      email,
-      name,
-      password,
-      username
-    };
-    // if user already exists
-    // send back 409 error
+    // check whether user exists
     User.findOne({'username': username}, function(err, user){
       if (err){
         console.log(err);
         next(err);
       } else {
         if (user) {
-          console.log("User already exists");
+          // user `username` already exists
           res.sendStatus(409);
         } else {
-          var newUser = new User({'username': username, 'password': password, 'name': name, 'email': email});
+          // user `username` does not exist
+          var newUser = new User(userInfo);
           newUser.save(function (err) {
             if (err) {
-              console.log(err);
-              next(err);
+              // console.log(err);
+              console.log('Bad/missing registration details');
+              res.sendStatus(400);
             } else {
-              console.log(newUser);
-              res.redirect('/profile');
+              // res.redirect('/profile');
+              res.sendStatus(201);
             }
           });
         }
       }
     });
-
-    // // temporary code
-    // req.session.username = req.body.username;
-    // res.redirect('/profile');
-  // }
+  }
 });
-
-// app.route('/*')
-// .get(function (req, res) {
-//   res.redirect('/');
-// });
-
 
 module.exports = app;
