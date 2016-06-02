@@ -86,7 +86,7 @@ angular.module('greenfield.services', [])
       method: 'GET',
       url: '/signin'
     }).then(function (resp){
-      console.log(resp.status){
+      console.log(resp.status)
       if (resp.status === 200){
         return true;
       } else {

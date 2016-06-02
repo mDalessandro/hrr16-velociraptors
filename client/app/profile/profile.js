@@ -1,6 +1,6 @@
 angular.module('greenfield.profile', [])
 
-.controller('ProfileController', function ($scope, Tags, Auth) {
+.controller('ProfileController', function ($scope, Tags, Auth, $location) {
 
   $scope.data = {};
   $scope.tag = {};
