@@ -133,10 +133,12 @@ app.route('/signin')
 .get(function(req, res) {
   if (req.session.username) {
     // user authenticated, send to profile
-    res.redirect('/profile');
+    // res.redirect('/profile');
+    res.sendStatus(200);
   } else {
     // user not authenticated, serve signin page
-    res.sendFile(path.resolve(__dirname + '/../client/app/auth/signin.html'));
+    // res.sendFile(path.resolve(__dirname + '/../client/app/auth/signin.html'));
+    res.sendStatus(403);
   }
 })
 .post(function(req, res) {
