@@ -18,13 +18,12 @@
   },
   "homepage": "https://github.com/hrr16-velociraptors/hrr16-velociraptors.git#readme",
   "dependencies": {
+    "bcrypt": "^0.8.6",
     "bcrypt-nodejs": "",
     "body-parser": "",
     "express": "",
     "express-session": "",
     "mongodb": "",
-    "mongoose": "^4.4.19",
-    "bcrypt": "^0.8.6",
     "mongoose": "^4.4.19",
     "q": "^1.4.1"
   }
