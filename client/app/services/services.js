@@ -53,8 +53,13 @@ angular.module('greenfield.services', [])
       url: '/signin',
       data: user
     })
-    .then(function (resp) {
-      return resp.data.token;
+    .then(function successCallback(resp) {
+      console.log('successfully logged in');
+      return resp.data;
+    }, function errorCallback(resp) {
+      console.log('failed to log in');
+      console.log(resp.data);
+      return resp.data;
     });
   };
 
@@ -64,14 +69,18 @@ angular.module('greenfield.services', [])
       url: '/signup',
       data: user
     })
-    .then(function (resp) {
-      return resp.data.token;
+    .then(function successCallback(resp) {
+      console.log('successfully signed up');
+      return resp.data;
+    }, function errorCallback(resp) {
+      console.log(resp.data);
+      return resp.data;
     });
   };
 
   //this function can be used when routing to check if a user has authorization to access
    var isAuth = function () {
-  //   
+  //   Possible GET request to users, used with the ng-change when typing in username/email fields
    };
 
 
