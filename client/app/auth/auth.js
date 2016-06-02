@@ -3,24 +3,32 @@ angular.module('greenfield.auth', [])
 .controller('AuthController', function($scope, Auth) {
   angular.extend($scope, Auth)
   
+  $scope.user = {};
+  $scope.newSignup = {};
+  $scope.conflict = false;
+  
   $scope.login = function() {
-    console.log('login was triggered');
-    //check if entered data matches an existing email & password (for a single user)
-      // if matching -> 
-        // pass data to signin()
-        // redirect to profile
-      // else -> 
-        // send to .result, "Login failed. Please check that you are entering your email and password correctly."
+    Auth.signin($scope.user)
+      .then(function(error){
+        $scope.newSignup.username=''; 
+        $scope.newSignup.password='';
+        if (error === 'Not Found' || error === 'Forbidden') {
+          $scope.conflict = true;
+        }
+      });
   }
   
   $scope.addUser = function() {
-    console.log('addUser was triggered');
-    //check if user already exists
-      // if exists -> 
-        // send to .result, "User already exists."
-      // else -> 
-        // submit user data for authentication
-        // redirect to login page
+    Auth.signup($scope.newSignup)
+      .then(function(error){
+        $scope.newSignup.email=''; 
+        $scope.newSignup.name=''; 
+        $scope.newSignup.username=''; 
+        $scope.newSignup.password='';
+        if (error === 'Conflict') {
+          $scope.conflict = true;
+        }
+      });
   }
   
 });

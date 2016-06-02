@@ -4,24 +4,24 @@
   
   <div class='navigation'>
     <ul>
-      <li><a href='/home' class='create'>Home</a></li>
+      <li><a href='#/home' class='create'>Home</a></li>
     </ul>
   </div>
   
   <!-- box for users to log in -->
-  <form name="signinForm" ng-submit="login(user.email, user.pass); user.email=''; user.pass='';">
-    <input name="email" ng-model="user.email" type="text" placeholder="Enter email address" required>
-    <input name="pass" ng-model="user.pass" type="text" placeholder="Enter password" required>
+  <form name="signinForm" ng-submit="login()">
+    <input name="email/username" ng-model="user.username" type="text" placeholder="Enter email address or username" required>
+    <input name="pass" ng-model="user.password" type="text" placeholder="Enter password" required>
     <button type="submit" ng-disabled=shortenForm.$invalid>Log In</button>
   </form>
   
   <!-- results of login attempt display here -->
-  <div class="result"><!-- {{ results of submit }} --></div>
+  <div class="result" ng-if="conflict">Failed log-in. Please check your username and password.</div>
   
   <!-- link to signup -->
   <div>
     Not a user? <br>
-    <a href='/signup'>Sign Up</a>
+    <a href='#/signup'>Sign Up</a>
   </div>
   
 </div>
