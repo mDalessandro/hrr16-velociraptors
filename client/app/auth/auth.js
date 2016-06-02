@@ -1,6 +1,6 @@
 angular.module('greenfield.auth', [])
 
-.controller('AuthController', function($scope, Auth) {
+.controller('AuthController', function($scope, Auth, $location) {
   angular.extend($scope, Auth)
   
   $scope.user = {};
@@ -14,7 +14,9 @@ angular.module('greenfield.auth', [])
         $scope.newSignup.password='';
         if (error === 'Not Found' || error === 'Forbidden') {
           $scope.conflict = true;
-        }
+        // } else {
+        //   $location.path('/profile')
+         }
       });
   }
   

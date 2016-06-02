@@ -81,6 +81,18 @@ angular.module('greenfield.services', [])
   //this function can be used when routing to check if a user has authorization to access
    var isAuth = function () {
   //   Possible GET request to users, used with the ng-change when typing in username/email fields
+  //GET request to /signin, if signed in 200, if not 403
+    return $http({
+      method: 'GET',
+      url: '/signin'
+    }).then(function (resp){
+      console.log(resp.status){
+      if (resp.status === 200){
+        return true;
+      } else {
+        return false
+      }
+    })
    };
 
 
