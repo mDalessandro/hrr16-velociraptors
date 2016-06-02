@@ -148,12 +148,31 @@ app.route('/signin')
   // } else {
     // user not authenticated
     // extract username and password from body
-    var username = req.body.username;
-    var password = req.body.password;
-    // check db for user credentials
+  var username = req.body.username;
+  var password = req.body.password;
+  // check db for user credentials
+  User.findOne({'username': username}).then(function(user){
+    if (!user){
+      // no user with that name found
+      res.sendStatus(404);
+    } else {
+      // there is a user by that name
+      return user.comparePasswords(password).then(function (match) {
+        if (match) {
+          req.session.username = username;
+          res.redirect('/profile');
+        } else {
+          res.sendStatus(403);
+        }
+      });
+    }
+  }).catch(function (error) {
+    console.log('In catch');
+    next(error);
+  });
     // if credentials pass assign session username, redirect to /profile
-    req.session.username = req.body.username;
-    res.redirect('/profile');
+    // req.session.username = req.body.username;
+    // res.redirect('/profile');
     // if credentials dont match send back 403 error
   // }
 });
