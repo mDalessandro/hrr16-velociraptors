@@ -29,7 +29,7 @@ angular.module('greenfield.profile', [])
   }
 
   if (!Auth.isAuth()){
-    //$location.path('/signin');
+    $location.path('#/signin');
   }
 
 });
