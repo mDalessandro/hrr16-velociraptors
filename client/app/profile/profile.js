@@ -28,8 +28,16 @@ angular.module('greenfield.profile', [])
     Auth.signout();
   }
 
-  if (!Auth.isAuth()){
-    $location.path('#/signin');
-  }
+  //console.log(Auth.isAuth())
+  Auth.isAuth()
+  .then(function(resp){
+    if (resp === 200){
+      console.log("authorized")
+    }
+  }).catch(function(resp){
+     $location.path('/signin');
+  })
+    // $location.path('/signin');
+  
 
 });
