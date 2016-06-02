@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "lint": "eslint ./"
   },
   "repository": {
     "type": "git",
@@ -26,5 +27,15 @@
     "mongodb": "",
     "mongoose": "^4.4.19",
     "q": "^1.4.1"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-cssmin": "^1.0.1",
+    "grunt-contrib-uglify": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-eslint": "^18.1.0",
+    "grunt-nodemon": "^0.4.2",
+    "grunt-shell": "^1.3.0"
   }
 }
