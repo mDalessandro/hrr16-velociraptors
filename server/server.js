@@ -116,6 +116,13 @@ app.route('/api/tags')
   }
 });
 
+app.route('/logout')
+.get(function(req, res) {
+  req.session.destroy(function (err) {
+    res.sendStatus(200);
+  });
+})
+
 app.route('/profile')
 .get(function (req, res) {
   // check whether user authenticated
