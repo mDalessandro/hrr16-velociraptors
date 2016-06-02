@@ -1,18 +1,17 @@
 //main angular module
 angular.module('greenfield', [
-  //'greenfield.home',
+  'greenfield.home',
   'greenfield.auth',
   'greenfield.profile',
   'greenfield.services',
   'ngRoute'
 ])
 .config(function($routeProvider) {
-  console.log("routing around")
   $routeProvider
-    // .when('/', {
-    //   templateUrl: 'app/home/home.html',
-    //   controller: 'HomeController'
-    // })
+    .when('/', {
+      templateUrl: 'app/home/home.html',
+      controller: 'HomeController'
+    })
     .when('/signin', {
       templateUrl: 'app/auth/signin.html',
       controller: 'AuthController'

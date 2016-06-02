@@ -6,7 +6,15 @@ angular.module('greenfield.services', [])
       method: 'GET',
       url: '/api/tags'
     }).then(function (resp){
+      return resp.data;
+    })
+  };
 
+  var search = function(tag){
+    return $http({
+      method: 'GET',
+      url: '/api/tags?tag='+tag.tagname
+    }).then(function (resp){
       return resp.data;
     })
   };
@@ -16,7 +24,6 @@ angular.module('greenfield.services', [])
       method: 'GET',
       url: '/api/tags/?user='+user
     }).then(function (resp){
-            console.log("getting from server: ",resp.data)
       return resp.data;
     })
   };
@@ -33,7 +40,8 @@ angular.module('greenfield.services', [])
   return {
     getAll: getAll,
     addOne: addOne,
-    getUserAll: getUserAll
+    getUserAll: getUserAll,
+    search: search
   };
 })
 
