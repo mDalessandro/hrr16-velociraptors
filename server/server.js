@@ -91,24 +91,25 @@ app.route('/api/tags')
     var lat  = req.body.lat;
     var long = req.body.long;
     // check to see whether that tag already exists
-    Tag.findOne({'tagname': tagname}, function(err, tag){
-      if (err){
-        console.log(err);
-        next(err);
+    Tag.findOne({tagname}).then(function(tag){
+      if (tag) {
+        // tag taken, 409 Conflict
+        res.sendStatus(409);
       } else {
-        if (tag) {
-          // tag taken, 409 Conflict
-          res.sendStatus(409);
-        } else {
-          // tag not taken: insert in DB, respond 201 + tag data
-          // Uncomment if ES6 not working
-          // var newTag = new Tag({'username': username, 'tagname': tag, 'lat': lat, 'long': long});
-          var newTag = new Tag({username, tagname, lat, long});
-          newTag.save(function (err, tag) {
-            res.status(201).json(tag);
-          });
-        }
+        // tag not taken: insert in DB, respond 201 + tag data
+        // Uncomment if ES6 not working
+        // var newTag = new Tag({'username': username, 'tagname': tag, 'lat': lat, 'long': long});
+        var newTag = new Tag({username, tagname, lat, long});
+        return newTag.save().then(function () {
+          res.status(201);
+        }).catch(function () {
+          console.log('Bad tag data provided');
+          res.sendStatus(400);
+        });
       }
+    }).catch(function (error) {
+      console.log('Invalid tag data supplied');
+      res.sendStatus(409);
     });
   } else {
     // user not authenticated
@@ -202,7 +203,7 @@ app.route('/signup')
     var userInfo = {email, name, password, username};
 
     // check whether user exists
-    User.findOne({'username': username}).then(function(user){
+    User.findOne({username}).then(function(user){
       if (user) {
         // user `username` already exists
         console.log('User already exist');
@@ -211,14 +212,12 @@ app.route('/signup')
         // user `username` does not exist
         // console.log('User ', username, ' does not exist');
         var newUser = new User(userInfo);
-        return newUser.save(function (err) {
-          if (err) {
-            console.log('Bad/missing registration details');
-            res.sendStatus(400);
-          } else {
-            req.session.username = username;
-            res.sendStatus(201);
-          }
+        return newUser.save().then(function () {
+          req.session.username = username;
+          res.sendStatus(201);
+        }).catch(function () {
+          console.log('Bad user info');
+          res.sendStatus(400);
         });
       }
     }).catch(function (error) {
