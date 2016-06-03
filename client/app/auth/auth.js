@@ -14,8 +14,8 @@ angular.module('greenfield.auth', [])
         $scope.newSignup.password='';
         if (error === 'Not Found' || error === 'Forbidden') {
           $scope.conflict = true;
-        // } else {
-        //   $location.path('/profile')
+        } else {
+          $location.path('/profile')
          }
       });
   }
@@ -29,7 +29,9 @@ angular.module('greenfield.auth', [])
         $scope.newSignup.password='';
         if (error === 'Conflict') {
           $scope.conflict = true;
-        }
+        } else {
+          $location.path('/profile')
+         }
       });
   }
   
