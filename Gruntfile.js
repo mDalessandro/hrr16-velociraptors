@@ -8,8 +8,11 @@ module.exports = function(grunt) {
         separator:';'
       },
       files:{
-        src: ['client/**/*.js'],
-        dest: 'client/clientBuilt.js'
+        src: [
+          'client/app/**/*.js',
+          '!client/app/leaflet'
+        ],
+        dest: 'client/build/clientBuilt.js'
       }
     },
     nodemon: {
@@ -24,30 +27,30 @@ module.exports = function(grunt) {
       },
       my_target:{
         files:{
-          'client/client.min.js': ['client/clientBuilt.js']
+          'client/build/client.min.js': ['client/build/client.ng.js']
         }
       }
 
     },
 
 
-    eslint: {
-      files: [
-        'Gruntfile.js',
-        'client/**/*.js',
-        'server/**/*.js'
-      ],
-      options: {
-        force: 'true',
-        eslintrc: '.eslintrc',
-        ignores: ['client/lib/**/*.js']
-      }
-    },
+    // eslint: {
+    //   files: [
+    //     'Gruntfile.js',
+    //     'client/**/*.js',
+    //     'server/**/*.js'
+    //   ],
+    //   options: {
+    //     force: 'true',
+    //     eslintrc: '.eslintrc',
+    //     ignores: ['client/lib/**/*.js', 'client/build/**/*.js']
+    //   }
+    // },
 
     cssmin: {
       css:{
         files:{
-          'client/styles/styles.min.css': ['client/styles/styles.css']
+          'client/build/styles.min.css': ['client/styles/styles.css']
         }
       }
     },
@@ -61,22 +64,42 @@ module.exports = function(grunt) {
         ]
       },
       css: {
-        files: 'client/*.css',
+        files: 'client/styles/*.css',
         tasks: ['cssmin']
       }
     },
 
     shell: {
       prodServer: {
-        command: 'git push heroku master'
+        command: 'git push heroku i96:master'
       }
     },
+    bower: {
+        install: {
+            options: {
+              targetDir: '.client/lib'
+            }
+        }
+    },
+    ngAnnotate: {
+        options: {
+            singleQuotes: true
+        },
+        app: {
+            files: {
+                'client/build/client.ng.js': ['client/build/clientBuilt.js']
+            }
+        }
+    }
+
+
+
   });
 
-
-
+  grunt.loadNpmTasks('grunt-ng-annotate'); 
+  grunt.loadNpmTasks('grunt-bower-task');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-eslint');
+  // grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
@@ -99,17 +122,18 @@ module.exports = function(grunt) {
   ////////////////////////////////////////////////////
   // Main grunt tasks
   ////////////////////////////////////////////////////
-
   grunt.registerTask('heroku:production', 
     ['build']
   );
 
-  grunt.registerTask('test', [
-    'eslint'
-  ]);
+  // grunt.registerTask('test', [
+  //   'eslint'
+  // ]);
 
-  grunt.registerTask('build', [  
+  grunt.registerTask('build', [
+    'bower',
     'concat',
+    'ngAnnotate', 
     'uglify',
     'cssmin'
   ]);
@@ -124,8 +148,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('deploy', [
-    // add your deploy tasks here
-    'test',
+    // 'test',
     'build',
     'upload'
   ]);
