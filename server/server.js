@@ -202,29 +202,27 @@ app.route('/signup')
     var userInfo = {email, name, password, username};
 
     // check whether user exists
-    User.findOne({'username': username}, function(err, user){
-      if (err){
-        console.log(err);
-        next(err);
+    User.findOne({'username': username}).then(function(user){
+      if (user) {
+        // user `username` already exists
+        console.log('User already exist');
+        res.sendStatus(409);
       } else {
-        if (user) {
-          // user `username` already exists
-          res.sendStatus(409);
-        } else {
-          // user `username` does not exist
-          var newUser = new User(userInfo);
-          newUser.save(function (err) {
-            if (err) {
-              // console.log(err);
-              console.log('Bad/missing registration details');
-              res.sendStatus(400);
-            } else {
-              // res.redirect('/profile');
-              res.sendStatus(201);
-            }
-          });
-        }
+        // user `username` does not exist
+        // console.log('User ', username, ' does not exist');
+        var newUser = new User(userInfo);
+        return newUser.save(function (err) {
+          if (err) {
+            console.log('Bad/missing registration details');
+            res.sendStatus(400);
+          } else {
+            res.sendStatus(201);
+          }
+        });
       }
+    }).catch(function (error) {
+      console.log('Invalid user details provided');
+      res.sendStatus(400);
     });
   }
 });
