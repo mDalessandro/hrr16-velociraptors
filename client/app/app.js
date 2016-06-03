@@ -4,7 +4,8 @@ angular.module('greenfield', [
   'greenfield.auth',
   'greenfield.profile',
   'greenfield.services',
-  'ngRoute'
+  'ngRoute',
+  'ngCookies'
 ])
 .config(function($routeProvider) {
   $routeProvider
