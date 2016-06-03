@@ -2,6 +2,8 @@
 
   <h1>{{username}} - My Tags</h1>
 
+
+
  <div class='navigation'>
   <ul>
     <li><a href='#/profile' class='index'>My Profile</a></li>
@@ -9,6 +11,7 @@
     <li><a href='#/signin' ng-click='signout();' class='logout'>Logout</a></li>
       </ul>
   </div>
+  <div style="width: 700px; height: 400px;" id="map"></div>
   <!--box for users to register new tags-->
   <!--will need to validate/check if tag already exists here or somewhere else in program-->
   <form name="registerForm" ng-submit='addTag()' novalidate>
