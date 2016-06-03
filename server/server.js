@@ -86,7 +86,7 @@ app.route('/api/tags')
   // check whether user authenticated
   if (req.session.username) {
     // user authenticated
-    var username = req.body.username; // should actually be req.session.username
+    var username = req.session.username; // should actually be req.session.username
     var tagname  = req.body.tagname;
     var lat  = req.body.lat;
     var long = req.body.long;
