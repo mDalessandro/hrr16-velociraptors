@@ -1,61 +1,77 @@
-# [NAME] #
+# Intro
+This app provides a *service* for registering names associated to GPS coordinates, similar to how a DNS registrar provides a service for registering names that are associated to IP addresses. In the case of DNS, these names are called TLDs (top-level domains, or more commonly, just "domains").
 
-<!-- 
-> This material was originally posted [here](http://www.quora.com/What-is-Amazons-approach-to-product-development-and-product-management). It is reproduced here for posterities sake.
+In our app, these names are called **[name]**.
 
-There is an approach called "working backwards" that is widely used at Amazon. They work backwards from the customer, rather than starting with an idea for a product and trying to bolt customers onto it. While working backwards can be applied to any specific product decision, using this approach is especially important when developing new products or features.
+All **[names]** registered live in the same namespace, are publicly accessible, and must be unique. That is, no two people can register `home`, just like no two people can register `example.com`.
 
-For new initiatives a product manager typically starts by writing an internal press release announcing the finished product. The target audience for the press release is the new/updated product's customers, which can be retail customers or internal users of a tool or technology. Internal press releases are centered around the customer problem, how current solutions (internal or external) fail, and how the new product will blow away existing solutions.
+However, different names can be made to point to the same GPS coordinate. The analogy with the DNS service is the same: there can be any number of domain names pointing to the same server (IP address), that is, anyone can register `<my_personal_domain>.com` and make it point to Example's servers. Likewise, different names registered by different people can point to the same coordinate.
 
-If the benefits listed don't sound very interesting or exciting to customers, then perhaps they're not (and shouldn't be built). Instead, the product manager should keep iterating on the press release until they've come up with benefits that actually sound like benefits. Iterating on a press release is a lot less expensive than iterating on the product itself (and quicker!).
+# User Experience and Service Mechanics
+Users can sign up for a free account to register **[name]**s and assign them coordinates. Thats it.
 
-If the press release is more than a page and a half, it is probably too long. Keep it simple. 3-4 sentences for most paragraphs. Cut out the fat. Don't make it into a spec. You can accompany the press release with a FAQ that answers all of the other business or execution questions so the press release can stay focused on what the customer gets. My rule of thumb is that if the press release is hard to write, then the product is probably going to suck. Keep working at it until the outline for each paragraph flows. 
+The syntax for referring to a registered **[name]** in the context of this service is via an underscore: `_home` would supposedly point to someone's home, and `_companyHQ` would supposedly point to that company's headquarters.
 
-Oh, and I also like to write press-releases in what I call "Oprah-speak" for mainstream consumer products. Imagine you're sitting on Oprah's couch and have just explained the product to her, and then you listen as she explains it to her audience. That's "Oprah-speak", not "Geek-speak".
+Developers wanting to integrate this service with their apps can query our RESTful interface. For example, developers working on a messaging app can look for occurances of the pattern `_<text>` in a user submitted string and query the API. If the API returns a succesful response, the developers can then turn that part of the string into a link to the corresponding coordinate on a map.
 
-Once the project moves into development, the press release can be used as a touchstone; a guiding light. The product team can ask themselves, "Are we building what is in the press release?" If they find they're spending time building things that aren't in the press release (overbuilding), they need to ask themselves why. This keeps product development focused on achieving the customer benefits and not building extraneous stuff that takes longer to build, takes resources to maintain, and doesn't provide real customer benefit (at least not enough to warrant inclusion in the press release).
- -->
+This service can also be integrated with ecommerce sites. Instead of having users enter their addresses into various fields (which is quite cumbersome), they may allow users to write a single **[name]** which will greatly speed up the checkout process.
+```
+Insert shipping info |vs.| Insert **[name]**: _myHouse
+Addr Line1:            |
+Addr Line2:            |
+Zip Code:              |
+etc...                 |
+```
 
-## Description ##
-  > Public Registrar for GPS coordinates. The key is name-coordinate pair. User 'trademarks' the name  
-    and can assign coordinates to it.
+# Suggestion for Legacy
+Implement an app (i.e. chat client, ecommerce site, other) that integrates this service.
 
-## Summary ##
-  > Allows users to register GPS coordinates, by inputting the coordinate or an address, 
-    with a unique identifier, and allow that unique identifier to be used as a reference.  
-    This will also cut down on ambiguity on a location. Simple, sharable, location tags.  
-    Also features a search bar to find the identifier's location on the map.
+# Technical Documentation
+All the specs you need to succesfully complete Legacy are in this section
 
-## Problem ##
-  > Solves the problem of identifying a place uniquely, without offering up an official name for a  
-    location, allowing users to create their own.  
-    Cuts down on the time required to share meaningful location data.
-  
-## Solution ##
-  > Our product will provide a user-friendly interface to register new identifier/coordinate pairs,  
-    also featuring an easily accessible api.  
-    Because the identifiers are simpler and more memorable than GPS co-ordinates, users will be  
-    to share the locations more efficiently. 
-    
-## Our Team ##
-  > Product Owner: Steven Marks  
-    Scrum Master: Eduard Bardají Puig  
-    Software Engineer: Tyrus Brenc  
-    Software Engineer: Matthew D'Alessandro
+## Server Routes
+| URL                    | HTTP Verb | Request Body           | Result                                                                                             | Response body                                                                       |
+|------------------------|-----------|------------------------|----------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
+| /                      | GET       | -                      | Responds with home page.                                                                           | HTML of home page.                                                                  |
+| /api/tags?username=bob | GET       | -                      | Responds with bob's tags if bob exists.                                                            | JSON. Array of zero or more tags. Array of length zero if bob does not exist.       |
+| /api/tags?tag=myHouse  | GET       | -                      | Responds with single tag if found.                                                                 | JSON. Array of length 1 (one) if tag exists, length 0 (zero) if tag does not exist. |
+| /api/tags              | GET       | -                      | Returns all tags from DB.                                                                          | JSON. Array of zero or mor tags.                                                    |
+| /api/tags              | POST      | JSON. `tag`            | Inserts `tag` in DB. User must be authenticated. Returns 201 on success.                           | JSON. Inserted `tag` on success.                                                    |
+| /logout                | GET       | -                      | Destroys user session                                                                              | -                                                                                   |
+| /signin                | POST      | JSON. User credentials | Signs in user.                                                                                     | -                                                                                   |
+| /signup                | POST      | JSON. User credentials | Creates user if username not taken. Will redirect (302) to profile, or 409 if user already exists. | -                                                                                   |
 
-## Quote From Us ##
-  > Our fantastic Product Owner, Steven Marks, says, "No longer will you suffer from using  
-    long addresses and/or confusing coordinates!"
+## Status codes in detail
+* **200** Used to signal that a user is authenticated or when `/` is requested.
 
-## How to Get Started ##
-  > Users will sign up for the service, and can then assign identifier-coordinate tags. The application  
-    will automatically check the availability of the inputted identifier name.
+* The only **302** is in a "catch-all" route that redirects to `/`.
 
-## Customer Quote ##
-  > User Cody Daig provides us with some very valuable insight from a user perspective. He says,  
-    "I was in the process of tracking a tornado with my bros, and got lost in the storm! Luckily,  
-    I was already signed up with [NAME], so my bros were able to guide me out of the darkness."
+* **400** When the JSON data is not properly formatted, such as missing username during signup or missing latitude when creating tag. Client side checks should prevent sending invalid data, but if you use postman, you are able to send invalid data and the server will handle it properly.
 
-## Closing and Call to Action ##
-  > Check out our app at: [DEPLOYMENT_URL]
-  
+* **403** For all unauthorized requests requiring authorization.
+
+* **404** The site does not send 404s. Since it is an SPA living off `/`, any attempt to navigate to other routes outside of the API will redirect to `/`.
+
+## Client-side routes with angular
+
+* `#/`: Home page with tag search functionality
+* `#/signin`: Log in page
+* `#/signup`: Sign up page
+* `#/profile`: User profile page. Can see tags and register new ones.
+
+## DB
+Using mongoDB with mongoose. The database has two collections: one for tags and one for users. One user can have many tags. All tags belong to only one user. This is a user:tag => 1:many relationship.
+
+The database was set up with two models: one for users and one for tags. All fields in either model are required.
+
+### Users model
+* `email`: User's email.
+* `name`: User's real name. Used to greet user in profile page.
+* `password`: Stores a bcrypt hash of user's real password.
+* `username`: Alias or handle the user wants to use to log into their account.
+
+### Tags model
+* `tagname`: User designated name for the tag.
+* `username`: Username the tag belongs to.
+* `lat`: North/south degrees from equator. Range [-90, 90].
+* `long`: East/west from prime meridian. Range [-180, 180].
