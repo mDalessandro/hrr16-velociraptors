@@ -216,6 +216,7 @@ app.route('/signup')
             console.log('Bad/missing registration details');
             res.sendStatus(400);
           } else {
+            req.session.username = username;
             res.sendStatus(201);
           }
         });
