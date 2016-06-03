@@ -94,6 +94,12 @@ angular.module('greenfield.services', [])
 
   //this function will remove authorization from user and route to signin OR home page
    var signout = function () {
+    return $http({
+      method: 'GET',
+      url: '/logout'
+    }).then(function(resp) {
+     return resp.status
+    });
   //   $window.localStorage.removeItem('com.shortly');
   //   $location.path('/signin');
    };
