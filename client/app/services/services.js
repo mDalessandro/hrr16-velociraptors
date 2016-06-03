@@ -20,15 +20,17 @@ angular.module('greenfield.services', [])
   };
   
   var getUserAll = function(user){
+    console.log("user: ",user)
     return $http({
       method: 'GET',
-      url: '/api/tags/?user='+user
+      url: '/api/tags/?username='+user
     }).then(function (resp){
       return resp.data;
     })
   };
 
-  var addOne = function(tag){
+  var addOne = function(tag, username){
+    tag.username = username;
     console.log("sending server: ",tag)
     return $http({
       method: 'POST',
@@ -45,9 +47,14 @@ angular.module('greenfield.services', [])
   };
 })
 
-.factory('Auth', function ($http, $window) {
+.factory('Auth', function ($http, $window, $cookieStore) {
+
+  var getUsername = function(){
+    return $cookieStore.get('username');
+  }
 
   var signin = function (user) {
+    $cookieStore.put('username',user.username);
     return $http({
       method: 'POST',
       url: '/signin',
@@ -64,6 +71,7 @@ angular.module('greenfield.services', [])
   };
 
   var signup = function (user) {
+    $cookieStore.put('username',user.username);
     return $http({
       method: 'POST',
       url: '/signup',
@@ -106,6 +114,7 @@ angular.module('greenfield.services', [])
 
 
   return {
+    getUsername: getUsername,
     signin: signin,
     signup: signup,
     isAuth: isAuth,

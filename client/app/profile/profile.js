@@ -4,10 +4,11 @@ angular.module('greenfield.profile', [])
 
   $scope.data = {};
   $scope.tag = {};
+  $scope.username=Auth.getUsername();
 
   //User adds tag to database
   $scope.addTag = function(){
-    Tags.addOne($scope.tag)
+    Tags.addOne($scope.tag, Auth.getUsername())
     .then(function(){
       $scope.getUserTags();
     });
@@ -15,7 +16,7 @@ angular.module('greenfield.profile', [])
 
   //gets all user tags
   $scope.getUserTags = function(){
-    Tags.getUserAll()
+    Tags.getUserAll(Auth.getUsername())
     .then(function(tags){
       $scope.data.tags = tags;
     });
