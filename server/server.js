@@ -86,7 +86,7 @@ app.route('/api/tags')
   // check whether user authenticated
   if (req.session.username) {
     // user authenticated
-    var username = req.body.username; // should actually be req.session.username
+    var username = req.session.username; // should actually be req.session.username
     var tagname  = req.body.tagname;
     var lat  = req.body.lat;
     var long = req.body.long;
@@ -225,6 +225,12 @@ app.route('/signup')
       res.sendStatus(400);
     });
   }
+});
+
+// catch all route
+app.route('/*')
+.get(function (req, res) {
+  res.redirect('/');
 });
 
 module.exports = app;
