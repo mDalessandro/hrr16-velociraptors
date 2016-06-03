@@ -227,4 +227,10 @@ app.route('/signup')
   }
 });
 
+// catch all route
+app.route('/*')
+.get(function (req, res) {
+  res.redirect('/');
+});
+
 module.exports = app;
