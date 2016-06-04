@@ -1,9 +1,9 @@
 //main angular module
-angular.module('greenfield', [
-  'greenfield.home',
-  'greenfield.auth',
-  'greenfield.profile',
-  'greenfield.services',
+angular.module('omgeo', [
+  'omgeo.home',
+  'omgeo.auth',
+  'omgeo.profile',
+  'omgeo.services',
   'ngRoute',
   'ngCookies',
 ])

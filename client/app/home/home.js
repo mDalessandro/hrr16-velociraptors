@@ -1,4 +1,4 @@
-angular.module('greenfield.home', [])
+angular.module('omgeo.home', [])
 
 .controller('HomeController', function ($scope, Tags, Auth) {
 
@@ -8,7 +8,7 @@ angular.module('greenfield.home', [])
   var map=L.map('map').setView([37.75, -96.23],1);
 
   var baseMap= L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    attribution: ''
   }).addTo(map);
 
   $scope.searchTag = function(){

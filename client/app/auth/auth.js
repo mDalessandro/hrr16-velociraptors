@@ -1,4 +1,4 @@
-angular.module('greenfield.auth', [])
+angular.module('omgeo.auth', [])
 
 .controller('AuthController', function($scope, Auth, $location) {
   angular.extend($scope, Auth)

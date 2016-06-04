@@ -1,4 +1,4 @@
-angular.module('greenfield.profile', [])
+angular.module('omgeo.profile', [])
 
 .controller('ProfileController', function ($scope, Tags, Auth, $location) {
 
@@ -9,7 +9,7 @@ angular.module('greenfield.profile', [])
   var map=L.map('map').setView([37.75, -96.23],1);
 
   var baseMap= L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    attribution: ''
   }).addTo(map);
 
 
@@ -26,7 +26,6 @@ angular.module('greenfield.profile', [])
     Tags.getUserAll(Auth.getUsername())
     .then(function(tags){
       $scope.data.tags = tags;
-      console.log($scope.data.tags)
       for (var i = 0; i < $scope.data.tags.length; i++){
         var lat = $scope.data.tags[i].lat;
         var long = $scope.data.tags[i].long;

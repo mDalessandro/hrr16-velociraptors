@@ -1,15 +1,12 @@
-<div id='container' ng-model='greenfield.services'>
+<div id='container' ng-model='omgeo.services'>
 
   <h1>{{username}} - My Tags</h1>
 
 
 
  <div class='navigation'>
-  <ul>
-    <li><a href='#/profile' class='index'>My Profile</a></li>
-    <li><a href='#/' class='create'>Home</a></li>
-    <li><a href='#/signin' ng-click='signout();' class='logout'>Logout</a></li>
-      </ul>
+    <a href='#/' class='create'>Home</a>
+    <a href='#/signin' ng-click='signout();' class='logout'>Logout</a>
   </div>
   <div style="width: 700px; height: 400px;" id="map"></div>
   <!--box for users to register new tags-->
@@ -21,9 +18,11 @@
     <button type="submit" ng-disabled=shortenForm.$invalid>Register Tag</button>
   </form>
   <!--display for all user tags-->
-    <input name='search' type='text' ng-model='searcher' placeholder = "Search" >
+    <input class="search" name='search' type='text' ng-model='searcher' placeholder = "Search" >
       <div class='tags' ng-repeat="tag in data.tags | filter:searcher " ng-click="">
+      <div class='tag'>
       <div class="tagDisplay">tagname: {{tag.tagname}} </div>
       <div class="coordDisplay">lat: {{tag.lat}}, long: {{tag.long}}</div><br>
+      </div>
   </div>
 </div>
