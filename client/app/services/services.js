@@ -1,4 +1,4 @@
-angular.module('greenfield.services', [])
+angular.module('omgeo.services', [])
 
 .factory('Tags', function ($http) {
   var getAll = function(){
