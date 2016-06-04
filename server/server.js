@@ -1,6 +1,7 @@
 var bcrypt = require('bcrypt-nodejs');
 var bodyParser = require('body-parser');
 var express = require('express');
+var morgan = require('morgan');
 var session = require('express-session');
 var path = require('path');
 var User = require('./users/userModel');
@@ -10,6 +11,9 @@ var Tag = require('./tags/tagModel');
 // var db = require('./db.js');
 
 var app = express();
+
+app.use(morgan('dev'));
+
 app.use(session({
   secret: 'Greenfield STEM',
   cookie: { maxAge: 60 * 1000 }, // 1 minute
