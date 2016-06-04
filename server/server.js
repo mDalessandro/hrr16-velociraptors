@@ -88,8 +88,8 @@ app.route('/api/tags')
     // user authenticated
     var username = req.session.username; // should actually be req.session.username
     var tagname  = req.body.tagname;
-    var lat  = req.body.lat;
-    var long = req.body.long;
+    var lat  = req.body.lat; // [-90,90]
+    var long = req.body.long; // [-180,180]
     // check to see whether that tag already exists
     Tag.findOne({tagname}).then(function(tag){
       if (tag) {
