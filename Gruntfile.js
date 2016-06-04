@@ -71,7 +71,7 @@ module.exports = function(grunt) {
 
     shell: {
       prodServer: {
-        command: 'git push heroku i96:master'
+        command: 'git push heroku master'
       }
     },
     bower: {
