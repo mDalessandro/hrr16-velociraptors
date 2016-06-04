@@ -1,6 +1,6 @@
 angular.module('omgeo.services', [])
 
-.factory('Tags', function ($http) {
+.factory('Tags', function ($http, $location) {
   var getAll = function(){
     return $http({
       method: 'GET',
@@ -36,6 +36,8 @@ angular.module('omgeo.services', [])
       method: 'POST',
       url: '/api/tags',
       data: tag
+    }).catch(function(error){
+      $location.path('/signin');
     })
   };
   
