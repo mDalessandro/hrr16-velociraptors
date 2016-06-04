@@ -69,7 +69,7 @@ app.route('/api/tags')
           console.log(err);
           next(err);
         } else {
-          tag ? res.json(tag) || res.json([]);
+          tag ? res.json(tag) || res.json([])
         }
       });
   } else {

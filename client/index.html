@@ -3,8 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <title>omgeo</title>
-    <link rel="stylesheet" type="text/css" href="styles/styles.css" />
+    <link rel="stylesheet" type="text/css" href="build/styles.min.css" />
     <link rel="stylesheet" type="text/css" href="app/leaflet/leaflet.css">
+
   </head>
   <body>
   <div id='box'>
@@ -23,11 +24,14 @@
     <script src="app/leaflet/leaflet.js"></script>
     
     <!-- Angular Modules -->
-    <script src="app/auth/auth.js"></script>
-    <script src="app/home/home.js"></script>
-    <script src="app/profile/profile.js"></script>
-    <script src="app/app.js"></script>
-    <script src="app/services/services.js"></script>
+    <!-- Minified Script Tags -->
+    <script src="build/client.min.js"></script>
+
+
+    <!-- Hack Reactor banner -->
+    <a href="http://hackreactor.com/remote-beta">
+    <img style="position: fixed; top: 0; right: 0; border: 0;" src="http://i.imgur.com/x86kKmF.png" alt="Built at Hack Reactor Remote Beta">
+    </a>
 
   </body>
 </html>
