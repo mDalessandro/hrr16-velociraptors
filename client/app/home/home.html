@@ -15,9 +15,9 @@
   </div>
   <!--box for users to register new tags-->
   <!--will need to validate/check if tag already exists here or somewhere else in program-->
-  <form name="registerForm" ng-submit='searchTag()' novalidate>
+  <form name="registerForm" id="registerForm" ng-submit='searchTag()' novalidate>
     <input name='tagname' type='text' ng-model='tag.tagname' placeholder = "Enter tag name" required>
-    <button type="submit" ng-disabled=shortenForm.$invalid>Check for Tag</button>
+    <button id="registerButton" type="submit" ng-disabled=shortenForm.$invalid>Check for Tag</button>
 
   </form>
   <!--display for all user tags-->
