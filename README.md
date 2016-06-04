@@ -50,7 +50,7 @@ All the specs you need to succesfully complete Legacy are in this section
 
 * **403** For all unauthorized requests requiring authorization.
 
-* **404** The site does not send 404s. Since it is an SPA living off `/`, any attempt to navigate to other routes outside of the API will redirect to `/`.
+* 404 is not used. Since it is an SPA living off `/`, any attempt to navigate to other routes outside of the API will redirect to `/`.
 
 ## Client-side routes with angular
 
