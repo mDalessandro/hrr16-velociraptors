@@ -1,14 +1,18 @@
 <div id='container' ng-model='omgeo.services'>
 
-  <h1>{{username}} - My Tags</h1>
+  <h1 class='h1'>{{username}} - My Tags</h1>
 
 
 
  <div class='navigation'>
-    <a href='#/' class='create'>Home</a>
-    <a href='#/signin' ng-click='signout();' class='logout'>Logout</a>
+ <div class="navleft">
+    <a class='a' href='#/' class='create'>Home</a>
+    </div>
+    <div class="navright">
+    <a class='a' href='#/signin' ng-click='signout();' class='logout'>Logout</a>
+    </div>
   </div>
-  <div style="width: 700px; height: 400px;" id="map"></div>
+  <div class='map' id="map"></div>
   <!--box for users to register new tags-->
   <!--will need to validate/check if tag already exists here or somewhere else in program-->
   <form name="registerForm" ng-submit='addTag()' novalidate>
