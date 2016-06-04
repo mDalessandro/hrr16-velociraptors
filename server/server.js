@@ -101,7 +101,7 @@ app.route('/api/tags')
         // var newTag = new Tag({'username': username, 'tagname': tag, 'lat': lat, 'long': long});
         var newTag = new Tag({username, tagname, lat, long});
         return newTag.save().then(function () {
-          res.status(201);
+          res.sendStatus(201);
         }).catch(function () {
           console.log('Bad tag data provided');
           res.sendStatus(400);
@@ -122,7 +122,7 @@ app.route('/logout')
   req.session.destroy(function (err) {
     res.sendStatus(200);
   });
-})
+});
 
 app.route('/profile')
 .get(function (req, res) {
