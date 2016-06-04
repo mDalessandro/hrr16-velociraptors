@@ -37,7 +37,9 @@ angular.module('omgeo.services', [])
       url: '/api/tags',
       data: tag
     }).catch(function(error){
-      $location.path('/signin');
+      if (error.status === 403){
+        $location.path('/signin');
+      }
     })
   };
   
