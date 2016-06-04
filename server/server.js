@@ -16,7 +16,7 @@ app.use(morgan('dev'));
 
 app.use(session({
   secret: 'Greenfield STEM',
-  cookie: { maxAge: 60 * 1000 }, // 1 minute
+  cookie: { maxAge: 3600 * 1000 }, // 1 hour
   resave: true,
   saveUninitialized: true
 }));
