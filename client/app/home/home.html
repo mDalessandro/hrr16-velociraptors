@@ -1,11 +1,13 @@
 <div id='container'>
 
-  <h1>Home</h1>
+  <h1 class='h1' >Home</h1>
 
  <div class='navigation'>
-  
-    <a href='#/profile' class='index'>My Profile</a>
-    <a href='#/signin' ng-click='signout();' class='logout'>Logout</a>
+    <div class="navleft">
+    <a class='a' href='#/profile' class='index'>My Profile</a></div>
+    <div class="navright">
+    <a class='a' href='#/signin' ng-click='signout();' class='logout'>Logout</a>
+    </div>
       
   </div>
   <!--box for users to register new tags-->
@@ -19,7 +21,7 @@
     <div class="searchTag"><br>{{tag.result}}
     <a href='#/profile' id='registerThisTag' class='logout' >Register this Tag</a>
     </div>
-    <div style="width: 700px; height: 400px;" id="map"></div>
+    <div class='map' id="map"></div>
 
   </div>
 </div>
