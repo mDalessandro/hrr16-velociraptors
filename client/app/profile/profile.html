@@ -28,7 +28,7 @@
   <form name="registerForm" ng-submit='addTag()' novalidate>
     <input name='tagname' type='text' ng-model='tag.tagname' placeholder = "Enter tag name" required>
     <input name='lat' type='text' ng-model='tag.lat' placeholder = "Enter latitude" required>
-    <input name='long' type='text' ng-model='tag.long' placeholder = "Enter longitude" required>
+    <input name='long' type='text' ng-model='tag.long' placeholder = "Enter longitude" required><br>
     <button type="submit" ng-disabled=shortenForm.$invalid>Register Tag</button>
   </form>
   </div>
