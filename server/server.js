@@ -98,17 +98,19 @@ app.route('/api/tags')
     Tag.findOne({tagname}).then(function(tag){
       if (tag) {
         // tag taken, 409 Conflict
+        console.log('Tag taken');
         res.sendStatus(409);
       } else {
         // tag not taken: insert in DB, respond 201 + tag data
         // Uncomment if ES6 not working
         // var newTag = new Tag({'username': username, 'tagname': tag, 'lat': lat, 'long': long});
         var newTag = new Tag({username, tagname, lat, long});
-        return newTag.save().then(function () {
+        newTag.save().then(function () {
           res.sendStatus(201);
         }).catch(function () {
           console.log('Bad tag data provided');
           res.sendStatus(400);
+          return;
         });
       }
     }).catch(function (error) {
