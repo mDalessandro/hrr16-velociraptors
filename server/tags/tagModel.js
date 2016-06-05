@@ -24,7 +24,7 @@ var TagSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: function (long) {
-        return Number(long) >= -90 && Number(long) <= 90;
+        return Number(long) >= -180 && Number(long) <= 180;
       },
     message: 'Longitude out of bounds, [-180, 180]'
     }
