@@ -8,8 +8,8 @@
   
   <!-- box for users to log in -->
   <form name="signinForm" ng-submit="login()">
-    <input name="email/username" ng-model="user.username" type="text" placeholder="Enter email address or username" required><br>
-    <input name="pass" ng-model="user.password" type="text" placeholder="Enter password" required><br>
+    <input name="username" ng-model="user.username" type="text" placeholder="Enter username" required><br>
+    <input name="pass" ng-model="user.password" type="password" placeholder="Enter password" required><br>
     <button type="submit" ng-disabled=shortenForm.$invalid>Log In</button>
   </form>
   
