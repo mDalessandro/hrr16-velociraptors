@@ -4,8 +4,14 @@ angular.module('omgeo.home', [])
 
   $scope.allData={};
   $scope.tag={};
+  $scope.found={};
 
   var map=L.map('map').setView([37.75, -96.23],1);
+  var circle = L.circle([51.508, -0.11], 500, {
+          color: 'red',
+          fillColor: '#f03',
+          fillOpacity: 0
+        }).addTo(map);
 
   var baseMap= L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: ''
@@ -16,11 +22,22 @@ angular.module('omgeo.home', [])
     .then(function(result){
       console.log(JSON.stringify(result));
       if (result.length === 0){
+        $scope.found={};
         $scope.tag.result="Tag is available!"
         document.getElementById('registerThisTag').style.display="block";
+        map.removeLayer(circle)
+        
       } else {
-        $scope.tag.result="This Tag already exists"
+        $scope.found.lat=result.lat+", ";
+        $scope.found.long=result.long;
+        $scope.tag.result="Tag coordinates: "
         document.getElementById('registerThisTag').style.display="none";
+        map.removeLayer(circle)
+        circle = L.circle([$scope.found.lat, $scope.found.long], 5000, {
+          color: 'red',
+          fillColor: '#f03',
+          fillOpacity: 0.5
+        }).addTo(map);
       }
     });
   }
