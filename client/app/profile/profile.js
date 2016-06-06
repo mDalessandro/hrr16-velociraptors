@@ -19,20 +19,20 @@ angular.module('omgeo.profile', [])
     Tags.addOne($scope.tag, Auth.getUsername())
     .then(function(){
       $scope.getUserTags();
+      $scope.tag.tagname="";
+      $scope.tag.lat="";
+      $scope.tag.long="";
     });
   }
-  var markers={};
+  var markers = new L.FeatureGroup();
   //User deletes tag to database
   $scope.removeTag = function(tagname){
     var tagToDelete = {tagname: tagname};
     Tags.deleteOne(tagToDelete)
     .then(function(){
       $scope.getUserTags();
-      for (var item in markers){
-        if (item === tagname){
-          map.removeLayer(markers[tagname])
-        }
-      }
+      markMe();
+          
     });
   }
 
@@ -41,14 +41,21 @@ angular.module('omgeo.profile', [])
     Tags.getUserAll(Auth.getUsername())
     .then(function(tags){
       $scope.data.tags = tags;
-      for (var i = 0; i < $scope.data.tags.length; i++){
+      markMe()
+    });
+  }
+
+  var markMe=function(){
+    map.removeLayer(markers)
+    markers = new L.FeatureGroup();
+    for (var i = 0; i < $scope.data.tags.length; i++){
         var lat = $scope.data.tags[i].lat;
         var long = $scope.data.tags[i].long;
         var tagname = $scope.data.tags[i].tagname
-        markers[tagname]=L.marker([lat, long]).addTo(map);
-        markers[tagname].bindPopup('<b>'+tagname+'</b><br>'+lat+', '+long).openPopup();
+        var marker=L.marker([lat, long]).addTo(markers);
+        marker.bindPopup('<b>'+tagname+'</b><br>'+lat+', '+long).openPopup();
       }
-    });
+      markers.addTo(map);
   }
   //runs get all user tags on app startup
   $scope.getUserTags();
