@@ -92,6 +92,20 @@ body {
 
 }
 
+.tagDelete{
+  float: right;
+  padding: 2px 5px 2px 5px;
+  margin: 0px 10px 0px 0px;
+  color: red;
+  border: 1px solid #000000;
+  background-color:#e6e6e6;
+  cursor:pointer;
+}
+
+.tagDelete:hover{
+  background-color: #ffad99;
+}
+
 .coordDisplay{
 
 }

@@ -20,7 +20,6 @@ angular.module('omgeo.services', [])
   };
   
   var getUserAll = function(user){
-    console.log("user: ",user)
     return $http({
       method: 'GET',
       url: '/api/tags/?username='+user
@@ -31,7 +30,6 @@ angular.module('omgeo.services', [])
 
   var addOne = function(tag, username){
     tag.username = username;
-    console.log("sending server: ",tag)
     return $http({
       method: 'POST',
       url: '/api/tags',
@@ -47,13 +45,14 @@ angular.module('omgeo.services', [])
     return $http({
       method: 'DELETE',
       url: '/api/tags',
-      data: tagname
+      data: tagname,
+      headers: {'content-type':'application/json'}
     })
   };
   
   return {
     getAll: getAll,
-    search: search
+    search: search,
     getUserAll: getUserAll,
     addOne: addOne,
     deleteOne: deleteOne
@@ -78,7 +77,6 @@ angular.module('omgeo.services', [])
       return resp.data;
     }, function errorCallback(resp) {
       console.log('failed to log in');
-      console.log(resp.data);
       return resp.data;
     });
   };
@@ -94,7 +92,6 @@ angular.module('omgeo.services', [])
       console.log('successfully signed up');
       return resp.data;
     }, function errorCallback(resp) {
-      console.log(resp.data);
       return resp.data;
     });
   };

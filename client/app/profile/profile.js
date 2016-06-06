@@ -10,7 +10,7 @@ angular.module('omgeo.profile', [])
 
   var baseMap= L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '',
-    noWrap: true
+    worldCopyJump: true
   }).addTo(map);
 
 
@@ -21,13 +21,18 @@ angular.module('omgeo.profile', [])
       $scope.getUserTags();
     });
   }
-  
+  var markers={};
   //User deletes tag to database
   $scope.removeTag = function(tagname){
     var tagToDelete = {tagname: tagname};
     Tags.deleteOne(tagToDelete)
     .then(function(){
       $scope.getUserTags();
+      for (var item in markers){
+        if (item === tagname){
+          map.removeLayer(markers[tagname])
+        }
+      }
     });
   }
 
@@ -40,8 +45,8 @@ angular.module('omgeo.profile', [])
         var lat = $scope.data.tags[i].lat;
         var long = $scope.data.tags[i].long;
         var tagname = $scope.data.tags[i].tagname
-        var marker = L.marker([lat, long]).addTo(map);
-        marker.bindPopup('<b>'+tagname+'</b><br>'+lat+', '+long).openPopup();
+        markers[tagname]=L.marker([lat, long]).addTo(map);
+        markers[tagname].bindPopup('<b>'+tagname+'</b><br>'+lat+', '+long).openPopup();
       }
     });
   }

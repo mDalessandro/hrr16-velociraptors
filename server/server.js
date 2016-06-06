@@ -33,6 +33,7 @@ app.route('/')
 app.route('/api/tags')
 .delete(function (req, res, next) {
   var tagname = req.body.tagname;
+  console.log(req.body)
   var username = req.session.username;
   if (req.session.username) {
     Tag.findOneAndRemove({tagname, username}).then(function (doc) {
