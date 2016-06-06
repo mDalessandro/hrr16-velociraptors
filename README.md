@@ -30,16 +30,17 @@ Implement an app (i.e. chat client, ecommerce site, other) that integrates this 
 All the specs you need to succesfully complete Legacy are in this section
 
 ## Server Routes
-| URL                    | HTTP Verb | Request Body           | Result                                                                                             | Response body                                                                       |
-|------------------------|-----------|------------------------|----------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
-| /                      | GET       | -                      | Responds with home page.                                                                           | HTML of home page.                                                                  |
-| /api/tags?username=bob | GET       | -                      | Responds with bob's tags if bob exists.                                                            | JSON. Array of zero or more tags. Array of length zero if bob does not exist.       |
-| /api/tags?tag=myHouse  | GET       | -                      | Responds with single tag if found.                                                                 | JSON. Array of length 1 (one) if tag exists, length 0 (zero) if tag does not exist. |
-| /api/tags              | GET       | -                      | Returns all tags from DB.                                                                          | JSON. Array of zero or mor tags.                                                    |
-| /api/tags              | POST      | JSON. `tag`            | Inserts `tag` in DB. User must be authenticated. Returns 201 on success.                           | JSON. Inserted `tag` on success.                                                    |
-| /logout                | GET       | -                      | Destroys user session                                                                              | -                                                                                   |
-| /signin                | POST      | JSON. User credentials | Signs in user.                                                                                     | -                                                                                   |
-| /signup                | POST      | JSON. User credentials | Creates user if username not taken. Will redirect (302) to profile, or 409 if user already exists. | -                                                                                   |
+| URL                    | HTTP Verb | Request Body               | Result                                                                                             | Response body                                                                       |
+|------------------------|-----------|----------------------------|----------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
+| /                      | GET       | -                          | Responds with home page.                                                                           | HTML of home page.                                                                  |
+| /api/tags?username=bob | GET       | -                          | Responds with bob's tags if bob exists.                                                            | JSON. Array of zero or more tags. Array of length zero if bob does not exist.       |
+| /api/tags?tag=myHouse  | GET       | -                          | Responds with single tag if found.                                                                 | JSON. Array of length 1 (one) if tag exists, length 0 (zero) if tag does not exist. |
+| /api/tags              | GET       | -                          | Returns all tags from DB.                                                                          | JSON. Array of zero or mor tags.                                                    |
+| /api/tags              | POST      | JSON. `tag`                | Inserts `tag` in DB. User must be authenticated. Returns 201 on success.                           | JSON. Inserted `tag` on success.                                                    |
+| /api/tags              | DELETE    | JSON. `{tagname: tagname}` | Deletes tag with `tagname` from DB. Returns 200 on success.                                        | -                                                                                   |
+| /logout                | GET       | -                          | Destroys user session                                                                              | -                                                                                   |
+| /signin                | POST      | JSON. User credentials     | Signs in user.                                                                                     | -                                                                                   |
+| /signup                | POST      | JSON. User credentials     | Creates user if username not taken. Will redirect (302) to profile, or 409 if user already exists. | -                                                                                   |
 
 ## Status codes in detail
 * **200** Used to signal that a user is authenticated or when `/` is requested.
@@ -49,6 +50,8 @@ All the specs you need to succesfully complete Legacy are in this section
 * **400** When the JSON data is not properly formatted, such as missing username during signup or missing latitude when creating tag. Client side checks should prevent sending invalid data, but if you use postman, you are able to send invalid data and the server will handle it properly.
 
 * **403** For all unauthorized requests requiring authorization.
+
+* **409** When a name (username or tagname) is already in use.
 
 * 404 is not used. Since it is an SPA living off `/`, any attempt to navigate to other routes outside of the API will redirect to `/`.
 
