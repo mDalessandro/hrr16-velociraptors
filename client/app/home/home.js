@@ -15,7 +15,7 @@ angular.module('omgeo.home', [])
 
   var baseMap= L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '',
-    noWrap: true
+    worldCopyJump: true
   }).addTo(map);
 
   $scope.searchTag = function(){
