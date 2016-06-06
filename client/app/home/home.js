@@ -6,7 +6,7 @@ angular.module('omgeo.home', [])
   $scope.tag={};
   $scope.found={};
 
-  var map=L.map('map').setView([37.75, -96.23],1);
+  var map=L.map('map').setView([37.783697, -122.408966],1);
   var circle = L.circle([51.508, -0.11], 500, {
           color: 'red',
           fillColor: '#f03',
