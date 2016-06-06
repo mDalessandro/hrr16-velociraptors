@@ -43,11 +43,20 @@ angular.module('omgeo.services', [])
     })
   };
   
+  var deleteOne = function(tagname) {
+    return $http({
+      method: 'DELETE',
+      url: '/api/tags',
+      data: tagname
+    })
+  };
+  
   return {
     getAll: getAll,
-    addOne: addOne,
-    getUserAll: getUserAll,
     search: search
+    getUserAll: getUserAll,
+    addOne: addOne,
+    deleteOne: deleteOne
   };
 })
 

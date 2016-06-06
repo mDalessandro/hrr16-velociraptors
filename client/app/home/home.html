@@ -2,7 +2,7 @@
 
   <h1 class='h1' >Home</h1>
 
- <div class='navigation'>
+  <div class='navigation'>
     <div class="navleft">
       <a class='a' href='#/profile' class='index'>My Profile</a>
       <a class='a' href='#/signin' class='index'>Login</a>
@@ -10,19 +10,18 @@
     </div>
     <div class="navright">
       <a class='a' href='#/signin' ng-click='signout();' class='logout'>Logout</a>
-    </div>
-      
+    </div> 
   </div>
+  
   <!--box for users to register new tags-->
   <!--will need to validate/check if tag already exists here or somewhere else in program-->
   <form name="registerForm" id="registerForm" ng-submit='searchTag()' novalidate>
     <input name='tagname' type='text' ng-model='tag.tagname' placeholder = "Enter tag name" required>
     <button id="registerButton" type="submit" ng-disabled=shortenForm.$invalid>Check for Tag</button>
-
   </form>
   <!--display for all user tags-->
     <div class="searchTag"><br>{{tag.result}} {{found.lat}} {{found.long}}
-    <a href='#/profile' id='registerThisTag' class='logout' >Register this Tag</a>
+      <a href='#/profile' id='registerThisTag' class='logout' >Register this Tag</a>
     </div>
     <div class='map' id="map"></div>
 
