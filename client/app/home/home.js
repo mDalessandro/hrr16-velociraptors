@@ -14,7 +14,8 @@ angular.module('omgeo.home', [])
         }).addTo(map);
 
   var baseMap= L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: ''
+    attribution: '',
+    noWrap: true
   }).addTo(map);
 
   $scope.searchTag = function(){

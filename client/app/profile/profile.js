@@ -9,13 +9,23 @@ angular.module('omgeo.profile', [])
   var map=L.map('map').setView([37.75, -96.23],1);
 
   var baseMap= L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: ''
+    attribution: '',
+    noWrap: true
   }).addTo(map);
 
 
   //User adds tag to database
   $scope.addTag = function(){
     Tags.addOne($scope.tag, Auth.getUsername())
+    .then(function(){
+      $scope.getUserTags();
+    });
+  }
+  
+  //User deletes tag to database
+  $scope.removeTag = function(tagname){
+    var tagToDelete = {tagname: tagname};
+    Tags.deleteOne(tagToDelete)
     .then(function(){
       $scope.getUserTags();
     });

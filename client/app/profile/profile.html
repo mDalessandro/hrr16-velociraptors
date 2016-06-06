@@ -4,33 +4,36 @@
 
 
 
- <div class='navigation'>
- <div class="navleft">
-    <a class='a' href='#/' class='create'>Home</a>
+  <div class='navigation'>
+    <div class="navleft">
+      <a class='a' href='#/' class='create'>Home</a>
     </div>
     <div class="navright">
-    <a class='a' href='#/signin' ng-click='signout();' class='logout'>Logout</a>
+      <a class='a' href='#/signin' ng-click='signout();' class='logout'>Logout</a>
     </div>
   </div>
   <div class='map' id="map"></div>
+  
   <!--box for users to register new tags-->
   <!--will need to validate/check if tag already exists here or somewhere else in program-->
   <div id="right"><center>My Tags</center>
     <input class="search" name='search' type='text' ng-model='searcher' placeholder = "Search" >
-      <div class='tags' ng-repeat="tag in data.tags | filter:searcher " ng-click="">
+    <div class='tags' ng-repeat="tag in data.tags | filter:searcher " ng-click="">
       <div class='tag'>
-      <div class="tagDisplay">tagname: {{tag.tagname}} </div>
-      <div class="coordDisplay">lat: {{tag.lat}}, long: {{tag.long}}</div><br>
+        <div class="tagDelete" ng-click="removeTag(tag.tagname)">X</div>
+        <div class="tagDisplay">tagname: {{tag.tagname}} </div>
+        <div class="coordDisplay">lat: {{tag.lat}}, long: {{tag.long}}</div><br>
       </div>
+    </div>
   </div>
-  </div>
+  
   <div id="left"><center>Register a Tag</center>
-  <form name="registerForm" ng-submit='addTag()' novalidate>
-    <input name='tagname' type='text' ng-model='tag.tagname' placeholder = "Enter tag name" required>
-    <input name='lat' type='text' ng-model='tag.lat' placeholder = "Enter latitude" required>
-    <input name='long' type='text' ng-model='tag.long' placeholder = "Enter longitude" required><br>
-    <button type="submit" ng-disabled=shortenForm.$invalid>Register Tag</button>
-  </form>
+    <form name="registerForm" ng-submit='addTag()' novalidate>
+      <input name='tagname' type='text' ng-model='tag.tagname' placeholder = "Enter tag name" required>
+      <input name='lat' type='text' ng-model='tag.lat' placeholder = "Enter latitude" required>
+      <input name='long' type='text' ng-model='tag.long' placeholder = "Enter longitude" required><br>
+      <button type="submit" ng-disabled=shortenForm.$invalid>Register Tag</button>
+    </form>
   </div>
   <!--display for all user tags-->
   
