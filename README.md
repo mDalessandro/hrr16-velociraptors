@@ -75,3 +75,6 @@ The database was set up with two models: one for users and one for tags. All fie
 * `username`: Username the tag belongs to.
 * `lat`: North/south degrees from equator. Range [-90, 90].
 * `long`: East/west from prime meridian. Range [-180, 180].
+
+## Heroku Pipeline
+Whenever something is merged into the organization's master, Heroku will automatically redeploy.
