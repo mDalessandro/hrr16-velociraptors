@@ -31,6 +31,20 @@ app.route('/')
 });
 
 app.route('/api/tags')
+.delete(function (req, res, next) {
+  var tagname = req.body.tagname;
+  var username = req.session.username;
+  if (req.session.username) {
+    Tag.findOneAndRemove({tagname, username}).then(function (doc) {
+      res.sendStatus(200);
+    }).catch(function (err) {
+      console.log(err);
+      res.sendStatus(500)
+    });
+  } else {
+    res.sendStatus(403);
+  }
+})
 .get(function(req, res, next){
   // check whether there is a user query
   if (req.query.username) {
