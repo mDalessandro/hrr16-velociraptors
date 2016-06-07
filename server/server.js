@@ -26,45 +26,45 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.resolve(__dirname + '/../client/')));
 
 app.route('/')
-.get(function(req, res){
+.get(function(req, res) {
   res.sendFile(path.resolve(__dirname + '/../client/index.html'));
 });
 
 app.route('/api/tags')
-.delete(function (req, res, next) {
+.delete(function(req, res, next) {
   var tagname = req.body.tagname;
   console.log(req.body)
   var username = req.session.username;
   if (req.session.username) {
     Tag.findOneAndRemove({tagname, username}).then(function (doc) {
       res.sendStatus(200);
-    }).catch(function (err) {
+    }).catch(function(err) {
       console.log(err);
-      res.sendStatus(500)
+      res.sendStatus(500);
     });
   } else {
     res.sendStatus(403);
   }
 })
-.get(function(req, res, next){
+.get(function(req, res, next) {
   // check whether there is a user query
   if (req.query.username) {
     // check to see if username exists
     var username = req.query.username;
-    User.findOne({'username': username}, function(err, user){
+    User.findOne({'username': username}, function(err, user) {
       // findOne will return null if no matches
       // http://mongoosejs.com/docs/api.html#query_Query-findOne
-      if (err){
+      if (err) {
         console.log(err);
         next(err);
       } else {
         if (user) {
           // user exists, send back list of user's tags
-          Tag.find({'username': username}, function(err, tags){
+          Tag.find({'username': username}, function(err, tags) {
             // `tags` is an array of objects, each object is {tagname: 'myHouse', username: lat: 3.3425, long: 1.50588}
             // `find` will populate `tags` with empty array [] if no matches
             // http://stackoverflow.com/questions/18214635/what-is-returned-from-mongoose-query-that-finds-no-matches
-            if (err){
+            if (err) {
               console.log(err);
               next(err);
             } else {
@@ -79,8 +79,8 @@ app.route('/api/tags')
     });
   } else if (req.query.tag) {
       var tag = req.query.tag;
-      Tag.findOne({'tagname': tag}, function(err, tag){
-        if (err){
+      Tag.findOne({'tagname': tag}, function(err, tag) {
+        if (err) {
           console.log(err);
           next(err);
         } else {
@@ -91,8 +91,8 @@ app.route('/api/tags')
       });
   } else {
     // send back a list of all tags in DB
-      Tag.find({}, function(err, tags){
-      if (err){
+      Tag.find({}, function(err, tags) {
+      if (err) {
         console.log(err);
         next(err);
       } else {
@@ -110,7 +110,7 @@ app.route('/api/tags')
     var lat  = req.body.lat; // [-90,90]
     var long = req.body.long; // [-180,180]
     // check to see whether that tag already exists
-    Tag.findOne({tagname}).then(function(tag){
+    Tag.findOne({tagname}).then(function(tag) {
       if (tag) {
         // tag taken, 409 Conflict
         console.log('Tag taken');
@@ -120,15 +120,15 @@ app.route('/api/tags')
         // Uncomment if ES6 not working
         // var newTag = new Tag({'username': username, 'tagname': tag, 'lat': lat, 'long': long});
         var newTag = new Tag({username, tagname, lat, long});
-        newTag.save().then(function () {
+        newTag.save().then(function() {
           res.sendStatus(201);
-        }).catch(function () {
+        }).catch(function() {
           console.log('Bad tag data provided');
           res.sendStatus(400);
           return;
         });
       }
-    }).catch(function (error) {
+    }).catch(function(error) {
       console.log('Invalid tag data supplied');
       res.sendStatus(409);
     });
@@ -140,13 +140,13 @@ app.route('/api/tags')
 
 app.route('/logout')
 .get(function(req, res) {
-  req.session.destroy(function (err) {
+  req.session.destroy(function(err) {
     res.sendStatus(200);
   });
 });
 
 app.route('/profile')
-.get(function (req, res) {
+.get(function(req, res) {
   // check whether user authenticated
   if (req.session.username) {
     // user is authenticated
@@ -179,8 +179,8 @@ app.route('/signin')
     var username = req.body.username;
     var password = req.body.password;
     // check db for user credentials
-    User.findOne({'username': username}).then(function(user){
-      if (!user){
+    User.findOne({'username': username}).then(function(user) {
+      if (!user) {
         // no user with that name found
         res.sendStatus(404);
       } else {
@@ -195,7 +195,7 @@ app.route('/signin')
           }
         });
       }
-    }).catch(function (error) {
+    }).catch(function(error) {
       console.log('Invalid username/password combination');
       res.sendStatus(403);
     });
@@ -224,7 +224,7 @@ app.route('/signup')
     var userInfo = {email, name, password, username};
 
     // check whether user exists
-    User.findOne({username}).then(function(user){
+    User.findOne({username}).then(function(user) {
       if (user) {
         // user `username` already exists
         console.log('User already exist');
@@ -233,15 +233,15 @@ app.route('/signup')
         // user `username` does not exist
         // console.log('User ', username, ' does not exist');
         var newUser = new User(userInfo);
-        return newUser.save().then(function () {
+        return newUser.save().then(function() {
           req.session.username = username;
           res.sendStatus(201);
-        }).catch(function () {
+        }).catch(function() {
           console.log('Bad user info');
           res.sendStatus(400);
         });
       }
-    }).catch(function (error) {
+    }).catch(function(error) {
       console.log('Invalid user details provided');
       res.sendStatus(400);
     });
@@ -250,7 +250,7 @@ app.route('/signup')
 
 // catch all route
 app.route('/*')
-.get(function (req, res) {
+.get(function(req, res) {
   res.redirect('/');
 });
 

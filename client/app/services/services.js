@@ -1,11 +1,11 @@
 angular.module('omgeo.services', [])
 
-.factory('Tags', function ($http, $location) {
-  var getAll = function(){
+.factory('Tags', function($http, $location) {
+  var getAll = function() {
     return $http({
       method: 'GET',
       url: '/api/tags'
-    }).then(function (resp){
+    }).then(function(resp) {
       return resp.data;
     })
   };
@@ -14,28 +14,28 @@ angular.module('omgeo.services', [])
     return $http({
       method: 'GET',
       url: '/api/tags?tag='+tag.tagname
-    }).then(function (resp){
+    }).then(function(resp) {
       return resp.data;
     })
   };
   
-  var getUserAll = function(user){
+  var getUserAll = function(user) {
     return $http({
       method: 'GET',
       url: '/api/tags/?username='+user
-    }).then(function (resp){
+    }).then(function(resp) {
       return resp.data;
     })
   };
 
-  var addOne = function(tag, username){
+  var addOne = function(tag, username) {
     tag.username = username;
     return $http({
       method: 'POST',
       url: '/api/tags',
       data: tag
-    }).catch(function(error){
-      if (error.status === 403){
+    }).catch(function(error) {
+      if (error.status === 403) {
         $location.path('/signin');
       }
     })
@@ -59,13 +59,13 @@ angular.module('omgeo.services', [])
   };
 })
 
-.factory('Auth', function ($http, $window, $cookieStore) {
+.factory('Auth', function($http, $window, $cookieStore) {
 
-  var getUsername = function(){
+  var getUsername = function() {
     return $cookieStore.get('username');
-  }
+  };
 
-  var signin = function (user) {
+  var signin = function(user) {
     $cookieStore.put('username',user.username);
     return $http({
       method: 'POST',
@@ -97,31 +97,25 @@ angular.module('omgeo.services', [])
   };
 
   //this function can be used when routing to check if a user has authorization to access
-   var isAuth = function () {
-  //   Possible GET request to users, used with the ng-change when typing in username/email fields
-  //GET request to /signin, if signed in 200, if not 403
+  var isAuth = function() {
     return $http({
       method: 'GET',
       url: '/signin'
     }).then(function(resp) {
-     return resp.status
+      return resp.status;
     });
-    return 403
-   };
-
+    return 403;
+  };
 
   //this function will remove authorization from user and route to signin OR home page
-   var signout = function () {
+  var signout = function() {
     return $http({
       method: 'GET',
       url: '/logout'
     }).then(function(resp) {
-     return resp.status
+      return resp.status;
     });
-  //   $window.localStorage.removeItem('com.shortly');
-  //   $location.path('/signin');
-   };
-
+  };
 
   return {
     getUsername: getUsername,

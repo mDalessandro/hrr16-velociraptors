@@ -19,6 +19,7 @@
     <input name='tagname' type='text' ng-model='tag.tagname' placeholder = "Enter tag name" required>
     <button id="registerButton" type="submit" ng-disabled=shortenForm.$invalid>Check for Tag</button>
   </form>
+  
   <!--display for all user tags-->
     <div class="searchTag"><br>{{tag.result}} {{found.lat}} {{found.long}}
       <a href='#/profile' id='registerThisTag' class='logout' >Register this Tag</a>

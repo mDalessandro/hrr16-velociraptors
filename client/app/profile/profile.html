@@ -2,8 +2,6 @@
 
   <h1 class='h1'>{{username}} - Profile</h1>
 
-
-
   <div class='navigation'>
     <div class="navleft">
       <a class='a' href='#/' class='create'>Home</a>
@@ -14,8 +12,7 @@
   </div>
   <div class='map' id="map"></div>
   
-  <!--box for users to register new tags-->
-  <!--will need to validate/check if tag already exists here or somewhere else in program-->
+  <!--display for all user tags-->
   <div id="right"><center>My Tags</center>
     <input class="search" name='search' type='text' ng-model='searcher' placeholder = "Search" >
     <div class='tags' ng-repeat="tag in data.tags | filter:searcher " ng-click="">
@@ -27,6 +24,7 @@
     </div>
   </div>
   
+  <!--box for users to register new tags-->
   <div id="left"><center>Register a Tag</center>
     <form name="registerForm" ng-submit='addTag()' novalidate>
       <input name='tagname' type='text' ng-model='tag.tagname' placeholder = "Enter tag name" required>
@@ -35,6 +33,5 @@
       <button type="submit" ng-disabled=shortenForm.$invalid>Register Tag</button>
     </form>
   </div>
-  <!--display for all user tags-->
   
 </div>

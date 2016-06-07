@@ -2,36 +2,35 @@ angular.module('omgeo.home', [])
 
 .controller('HomeController', function ($scope, Tags, Auth) {
 
-  $scope.allData={};
-  $scope.tag={};
-  $scope.found={};
+  $scope.allData = {};
+  $scope.tag = {};
+  $scope.found = {};
 
-  var map=L.map('map').setView([37.783697, -122.408966],1);
+  var map = L.map('map').setView([37.783697, -122.408966],1);
   var circle = L.circle([51.508, -0.11], 500, {
           color: 'red',
           fillColor: '#f03',
           fillOpacity: 0
         }).addTo(map);
 
-  var baseMap= L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+  var baseMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '',
     worldCopyJump: true
   }).addTo(map);
 
-  $scope.searchTag = function(){
+  $scope.searchTag = function() {
     Tags.search($scope.tag)
-    .then(function(result){
+    .then(function(result) {
       console.log(JSON.stringify(result));
-      if (result.length === 0){
-        $scope.found={};
-        $scope.tag.result="Tag is available!"
+      if (result.length === 0) {
+        $scope.found = {};
+        $scope.tag.result = "Tag is available!"
         document.getElementById('registerThisTag').style.display="block";
         map.removeLayer(circle)
-        
       } else {
-        $scope.found.lat=result.lat+", ";
-        $scope.found.long=result.long;
-        $scope.tag.result="Tag coordinates: "
+        $scope.found.lat = result.lat + ", ";
+        $scope.found.long = result.long;
+        $scope.tag.result = "Tag coordinates: "
         document.getElementById('registerThisTag').style.display="none";
         map.removeLayer(circle)
         circle = L.circle([$scope.found.lat, $scope.found.long], 5000, {
@@ -41,11 +40,12 @@ angular.module('omgeo.home', [])
         }).addTo(map);
       }
     });
-  }
+  };
+  
   //gets all tags
-  $scope.getTags = function(){
+  $scope.getTags = function() {
     Tags.getAll()
-    .then(function(tags){
+    .then(function(tags) {
       $scope.allData.tags = tags;
       for (var i = 0; i < $scope.allData.tags.length; i++){
         var lat = $scope.allData.tags[i].lat;
@@ -55,14 +55,14 @@ angular.module('omgeo.home', [])
         marker.bindPopup('<b>'+tagname+'</b><br>'+lat+', '+long).openPopup();
       }
     });
-  }
+  };
+  
   //runs get all user tags on app startup
   $scope.getTags();
 
-
-  $scope.signout = function(){
+  $scope.signout = function() {
     Auth.signout();
-  }
+  };
 
   // if (!Auth.isAuth()){
   //   //$location.path('/signin');
